@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
+
 import { getProductBySlug } from "@/lib/supabase/queries";
 import ProductDetailClient from "./ProductDetailClient";
 
@@ -8,7 +11,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  let product: Awaited<ReturnType<typeof getProductBySlug>> = null;
+  try {
+    product = await getProductBySlug(slug);
+  } catch {
+    // fallback metadata
+  }
   if (!product) return { title: "Product Not Found | Omipeptides" };
   return {
     title: `${product.name} — ${product.category.charAt(0).toUpperCase() + product.category.slice(1).replace("-", " ")} Peptide | Omipeptides`,
@@ -32,7 +40,12 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  let product: Awaited<ReturnType<typeof getProductBySlug>> = null;
+  try {
+    product = await getProductBySlug(slug);
+  } catch (err) {
+    console.error("Failed to fetch product:", err);
+  }
 
   const jsonLd = product
     ? {

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Premium Research Peptides | Omipeptides",
   description:
@@ -20,11 +22,19 @@ import NewsletterCTA from "@/components/home/NewsletterCTA";
 import { getFeaturedProducts, getTestimonials, getBlogPosts } from "@/lib/supabase/queries";
 
 export default async function Home() {
-  const [featuredProducts, testimonials, blogPosts] = await Promise.all([
-    getFeaturedProducts(),
-    getTestimonials(),
-    getBlogPosts(),
-  ]);
+  let featuredProducts: Awaited<ReturnType<typeof getFeaturedProducts>> = [];
+  let testimonials: Awaited<ReturnType<typeof getTestimonials>> = [];
+  let blogPosts: Awaited<ReturnType<typeof getBlogPosts>> = [];
+
+  try {
+    [featuredProducts, testimonials, blogPosts] = await Promise.all([
+      getFeaturedProducts(),
+      getTestimonials(),
+      getBlogPosts(),
+    ]);
+  } catch (err) {
+    console.error("Failed to fetch data from Supabase:", err);
+  }
 
   return (
     <>

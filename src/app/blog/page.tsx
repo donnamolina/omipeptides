@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Research Hub — Peptide Science & Protocols | Omipeptides",
   description:
@@ -23,7 +25,12 @@ const blogImages = [
 ];
 
 export default async function BlogPage() {
-  const blogPosts = await getBlogPosts();
+  let blogPosts: Awaited<ReturnType<typeof getBlogPosts>> = [];
+  try {
+    blogPosts = await getBlogPosts();
+  } catch (err) {
+    console.error("Failed to fetch blog posts:", err);
+  }
   const featured = blogPosts[0];
   const rest = blogPosts.slice(1);
 
