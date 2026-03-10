@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { getSiteUrl } from "@/lib/utils";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function SignupForm() {
         data: {
           full_name: fullName,
         },
+        emailRedirectTo: `${getSiteUrl()}/auth/callback`,
       },
     });
 
