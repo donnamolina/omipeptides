@@ -1,0 +1,477 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ShoppingBag, Menu, X, ChevronDown, LogOut, User, Package } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useCartStore, type Currency } from "@/store/cart";
+import { motion, AnimatePresence } from "framer-motion";
+import { createClient } from "@/lib/supabase/client";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
+
+const categories = [
+  { label: "Recovery", href: "/products?category=recovery", color: "#4ECDC4" },
+  { label: "Anti-Aging", href: "/products?category=anti-aging", color: "#C49CFF" },
+  { label: "Performance", href: "/products?category=performance", color: "#FF8A5C" },
+  { label: "Weight Management", href: "/products?category=weight-management", color: "#7ED957" },
+];
+
+export default function Navbar() {
+  const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [catOpen, setCatOpen] = useState(false);
+  const [mobileCatOpen, setMobileCatOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const items = useCartStore((s) => s.items);
+  const currency = useCartStore((s) => s.currency);
+  const setCurrency = useCartStore((s) => s.setCurrency);
+  const itemCount = items.reduce((total, item) => total + item.quantity, 0);
+  const catRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (catRef.current && !catRef.current.contains(e.target as Node)) {
+        setCatOpen(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const displayCount = mounted ? itemCount : 0;
+
+  const userDisplayName = user
+    ? user.user_metadata?.full_name?.split(" ")[0] ||
+      user.email?.charAt(0).toUpperCase() ||
+      "U"
+    : null;
+
+  const userInitial = user
+    ? (user.user_metadata?.full_name?.charAt(0) || user.email?.charAt(0) || "U").toUpperCase()
+    : null;
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUserMenuOpen(false);
+    setMobileOpen(false);
+    router.refresh();
+  }
+
+  return (
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+          scrolled
+            ? "bg-warm-cream/80 backdrop-blur-xl shadow-[0_1px_0_rgba(232,224,216,0.8)]"
+            : "bg-transparent"
+        )}
+      >
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex h-20 items-center justify-between">
+            {/* Logo */}
+            <Link href="/" className="group flex items-center gap-2">
+              <span className="font-heading text-2xl font-extrabold tracking-tight text-midnight-ink transition-transform duration-300 group-hover:scale-[1.02]">
+                OMI
+                <span className="text-coral-punch">PEPTIDES</span>
+              </span>
+            </Link>
+
+            {/* Desktop Nav */}
+            <div className="hidden md:flex items-center gap-8">
+              <NavLink href="/">Home</NavLink>
+              <NavLink href="/products">Shop</NavLink>
+
+              {/* Categories Dropdown */}
+              <div ref={catRef} className="relative">
+                <button
+                  onClick={() => setCatOpen(!catOpen)}
+                  className="flex items-center gap-1 text-sm font-medium text-neutral-600 transition-colors hover:text-midnight-ink"
+                >
+                  Categories
+                  <ChevronDown
+                    className={cn(
+                      "h-3.5 w-3.5 transition-transform duration-300",
+                      catOpen && "rotate-180"
+                    )}
+                  />
+                </button>
+                <AnimatePresence>
+                  {catOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                      transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 rounded-[var(--radius-md)] border border-neutral-200 bg-white/95 backdrop-blur-lg p-2 shadow-[var(--shadow-lg)]"
+                    >
+                      {categories.map((cat) => (
+                        <Link
+                          key={cat.href}
+                          href={cat.href}
+                          onClick={() => setCatOpen(false)}
+                          className="group/item flex items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                        >
+                          <span
+                            className="h-2 w-2 rounded-full transition-transform duration-200 group-hover/item:scale-125"
+                            style={{ background: cat.color }}
+                          />
+                          {cat.label}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <NavLink href="/blog">Research</NavLink>
+              <NavLink href="/about">About</NavLink>
+            </div>
+
+            {/* Right Side */}
+            <div className="flex items-center gap-3">
+              {/* Shop Now CTA */}
+              <Link
+                href="/products"
+                className="hidden md:inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-coral-punch px-5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-[var(--shadow-coral)] hover:scale-[1.02] active:scale-[0.97]"
+              >
+                Shop Now
+              </Link>
+
+              {/* Auth: Log In link or User Menu */}
+              {mounted && (
+                <>
+                  {user ? (
+                    <div ref={userMenuRef} className="relative hidden md:block">
+                      <button
+                        onClick={() => setUserMenuOpen(!userMenuOpen)}
+                        className="flex h-10 items-center gap-2 rounded-[var(--radius-md)] border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-midnight-ink"
+                      >
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-coral-punch text-[11px] font-semibold text-white">
+                          {userInitial}
+                        </span>
+                        <span className="max-w-[80px] truncate">{userDisplayName}</span>
+                        <ChevronDown
+                          className={cn(
+                            "h-3.5 w-3.5 transition-transform duration-300",
+                            userMenuOpen && "rotate-180"
+                          )}
+                        />
+                      </button>
+                      <AnimatePresence>
+                        {userMenuOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                            transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                            className="absolute right-0 top-full mt-3 w-48 rounded-[var(--radius-md)] border border-neutral-200 bg-white/95 backdrop-blur-lg p-2 shadow-[var(--shadow-lg)]"
+                          >
+                            <Link
+                              href="/account"
+                              onClick={() => setUserMenuOpen(false)}
+                              className="flex items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                            >
+                              <User className="h-4 w-4" />
+                              My Account
+                            </Link>
+                            <Link
+                              href="/account/orders"
+                              onClick={() => setUserMenuOpen(false)}
+                              className="flex items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                            >
+                              <Package className="h-4 w-4" />
+                              My Orders
+                            </Link>
+                            <div className="my-1 h-px bg-neutral-200" />
+                            <button
+                              onClick={handleSignOut}
+                              className="flex w-full items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                            >
+                              <LogOut className="h-4 w-4" />
+                              Log Out
+                            </button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      href="/auth/login"
+                      className="hidden md:inline-flex text-sm font-medium text-neutral-600 transition-colors hover:text-midnight-ink"
+                    >
+                      Log In
+                    </Link>
+                  )}
+                </>
+              )}
+
+              {/* Currency Toggle */}
+              <button
+                onClick={() => setCurrency(currency === "USD" ? "THB" : "USD")}
+                className="flex h-10 items-center gap-1 rounded-[var(--radius-md)] border border-neutral-200 px-2.5 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-midnight-ink"
+                title={`Switch to ${currency === "USD" ? "Thai Baht" : "US Dollar"}`}
+                aria-label={`Currency: ${currency}. Switch to ${currency === "USD" ? "Thai Baht" : "US Dollar"}`}
+              >
+                <span className={cn("transition-opacity", currency === "USD" ? "opacity-100" : "opacity-40")}>$</span>
+                <span className="text-neutral-300">/</span>
+                <span className={cn("transition-opacity", currency === "THB" ? "opacity-100" : "opacity-40")}>฿</span>
+              </button>
+
+              <Link
+                href="/cart"
+                aria-label="Shopping cart"
+                className="relative flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] transition-colors hover:bg-neutral-100"
+              >
+                <ShoppingBag className="h-5 w-5 text-midnight-ink" />
+                <AnimatePresence>
+                  {displayCount > 0 && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                      className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-coral-punch text-[10px] font-semibold text-white"
+                    >
+                      {displayCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </Link>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] md:hidden hover:bg-neutral-100 transition-colors"
+                aria-label="Toggle menu"
+              >
+                <AnimatePresence mode="wait">
+                  {mobileOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X className="h-5 w-5 text-midnight-ink" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu className="h-5 w-5 text-midnight-ink" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-midnight-ink/20 backdrop-blur-sm md:hidden"
+            onClick={() => setMobileOpen(false)}
+          >
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="absolute right-0 top-0 h-full w-72 bg-warm-cream p-8 pt-24 shadow-[var(--shadow-xl)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex flex-col gap-5">
+                <MobileNavLink href="/" onClick={() => setMobileOpen(false)}>
+                  Home
+                </MobileNavLink>
+                <MobileNavLink href="/products" onClick={() => setMobileOpen(false)}>
+                  Shop
+                </MobileNavLink>
+
+                {/* Mobile Categories Accordion */}
+                <div>
+                  <button
+                    onClick={() => setMobileCatOpen(!mobileCatOpen)}
+                    className="flex w-full items-center justify-between font-heading text-2xl font-bold text-midnight-ink transition-colors hover:text-coral-punch"
+                  >
+                    Categories
+                    <ChevronDown
+                      className={cn(
+                        "h-5 w-5 transition-transform duration-300",
+                        mobileCatOpen && "rotate-180"
+                      )}
+                    />
+                  </button>
+                  <AnimatePresence>
+                    {mobileCatOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-3 flex flex-col gap-3 pl-4 border-l-2 border-coral-punch/20">
+                          {categories.map((cat) => (
+                            <Link
+                              key={cat.href}
+                              href={cat.href}
+                              onClick={() => setMobileOpen(false)}
+                              className="flex items-center gap-2 text-base font-medium text-neutral-600 transition-colors hover:text-coral-punch"
+                            >
+                              <span
+                                className="h-1.5 w-1.5 rounded-full"
+                                style={{ background: cat.color }}
+                              />
+                              {cat.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <MobileNavLink href="/blog" onClick={() => setMobileOpen(false)}>
+                  Research
+                </MobileNavLink>
+                <MobileNavLink href="/about" onClick={() => setMobileOpen(false)}>
+                  About
+                </MobileNavLink>
+
+                <div className="mt-2 h-px bg-neutral-200" />
+
+                <MobileNavLink href="/cart" onClick={() => setMobileOpen(false)}>
+                  Cart {displayCount > 0 && `(${displayCount})`}
+                </MobileNavLink>
+
+                {/* Mobile Auth Links */}
+                {mounted && (
+                  <>
+                    {user ? (
+                      <>
+                        <MobileNavLink href="/account" onClick={() => setMobileOpen(false)}>
+                          My Account
+                        </MobileNavLink>
+                        <MobileNavLink href="/account/orders" onClick={() => setMobileOpen(false)}>
+                          My Orders
+                        </MobileNavLink>
+                        <button
+                          onClick={handleSignOut}
+                          className="text-left font-heading text-2xl font-bold text-neutral-600 transition-colors hover:text-coral-punch"
+                        >
+                          Log Out
+                        </button>
+                      </>
+                    ) : (
+                      <MobileNavLink href="/auth/login" onClick={() => setMobileOpen(false)}>
+                        Log In
+                      </MobileNavLink>
+                    )}
+                  </>
+                )}
+
+                <Link
+                  href="/products"
+                  onClick={() => setMobileOpen(false)}
+                  className="mt-2 flex h-12 items-center justify-center rounded-[var(--radius-md)] bg-coral-punch text-sm font-semibold text-white transition-all hover:shadow-[var(--shadow-md)]"
+                >
+                  Shop Now
+                </Link>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="relative text-sm font-medium text-neutral-600 transition-colors hover:text-midnight-ink after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-electric-lime after:transition-all after:duration-300 hover:after:w-full"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function MobileNavLink({
+  href,
+  onClick,
+  children,
+}: {
+  href: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="font-heading text-2xl font-bold text-midnight-ink transition-colors hover:text-coral-punch"
+    >
+      {children}
+    </Link>
+  );
+}

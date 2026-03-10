@@ -1,0 +1,145 @@
+"use client";
+
+import Link from "next/link";
+import { ShoppingBag } from "lucide-react";
+import { Product } from "@/types";
+import { useCartStore, formatPrice } from "@/store/cart";
+import { motion } from "framer-motion";
+import { useState } from "react";
+
+const categoryProductImages: Record<string, string> = {
+  recovery: "/images/products/recovery-category.png",
+  "anti-aging": "/images/products/anti-aging-category.png",
+  performance: "/images/products/performance-category.png",
+  "weight-management": "/images/products/weight-management-category.png",
+};
+
+const categoryColors: Record<string, string> = {
+  recovery: "#4ECDC4",
+  "anti-aging": "#C49CFF",
+  performance: "#FF8A5C",
+  "weight-management": "#7ED957",
+};
+
+const categoryLabels: Record<string, string> = {
+  recovery: "Recovery",
+  "anti-aging": "Anti-Aging",
+  performance: "Performance",
+  "weight-management": "Weight Mgmt",
+};
+
+interface ProductCardProps {
+  product: Product;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  const addItem = useCartStore((s) => s.addItem);
+  const currency = useCartStore((s) => s.currency);
+  const [added, setAdded] = useState(false);
+
+  const categoryColor = categoryColors[product.category] ?? "#FF5C39";
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
+  return (
+    <Link href={`/products/${product.slug}`} className="group block h-full">
+      <div
+        className="relative flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] border border-neutral-200 bg-surface-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]"
+        style={
+          {
+            "--_glow-color": categoryColor,
+          } as React.CSSProperties
+        }
+      >
+        {/* Hover glow using category color */}
+        <div
+          className="pointer-events-none absolute inset-0 rounded-[var(--radius-lg)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            boxShadow: `0 0 24px 2px ${categoryColor}33, 0 0 48px 4px ${categoryColor}1A`,
+          }}
+        />
+
+        {/* Category badge */}
+        <span
+          className="inline-flex w-fit items-center rounded-[var(--radius-full)] px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white"
+          style={{ background: categoryColor }}
+        >
+          {categoryLabels[product.category]}
+        </span>
+
+        {/* Product image */}
+        <div className="mt-4 flex h-[220px] w-full items-center justify-center rounded-xl bg-white transition-transform duration-300 group-hover:scale-105">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={categoryProductImages[product.category]}
+            alt={product.name}
+            className="h-[160px] w-auto object-contain"
+          />
+        </div>
+
+        {/* Product info */}
+        <div className="mt-4 flex-1">
+          <h3 className="font-heading text-lg font-bold text-midnight-ink">
+            {product.name}
+          </h3>
+          <p className="mt-1 text-sm text-neutral-600 line-clamp-2">
+            {product.shortDescription}
+          </p>
+        </div>
+
+        {/* Price + ATC */}
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex items-baseline gap-2">
+            <span className="text-lg font-semibold text-midnight-ink">
+              {formatPrice(product.price, currency)}
+            </span>
+            {product.compareAtPrice && (
+              <span className="text-sm text-neutral-400 line-through">
+                {formatPrice(product.compareAtPrice, currency)}
+              </span>
+            )}
+          </div>
+
+          {/* Add to Cart button: hidden by default, slides up on card hover */}
+          <motion.button
+            onClick={handleAddToCart}
+            whileTap={{ scale: 0.9 }}
+            className="relative z-10 flex h-10 w-10 translate-y-4 items-center justify-center rounded-[var(--radius-md)] border border-coral-punch text-coral-punch opacity-0 transition-all duration-300 hover:bg-coral-punch hover:text-white group-hover:translate-y-0 group-hover:opacity-100"
+          >
+            {added ? (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="text-sm"
+              >
+                ✓
+              </motion.span>
+            ) : (
+              <ShoppingBag className="h-4 w-4" />
+            )}
+          </motion.button>
+        </div>
+
+        {/* Purity badge */}
+        <div className="mt-3 flex items-center gap-3 text-xs text-neutral-400">
+          <span className="font-mono">{product.purity} pure</span>
+          <span>·</span>
+          <span>{product.studiesCount} studies</span>
+          <span>·</span>
+          <span>★ {product.rating}</span>
+        </div>
+
+        {/* Research disclaimer */}
+        <p className="mt-2 text-xs italic text-neutral-400">
+          For research use only
+        </p>
+      </div>
+    </Link>
+  );
+}
