@@ -6,7 +6,7 @@ export const products: Product[] = [
     id: "bpc-157",
     name: "BPC-157",
     slug: "bpc-157",
-    category: "recovery",
+    category: "recovery-healing",
     price: 89.99,
     compareAtPrice: 109.99,
     description:
@@ -46,7 +46,7 @@ export const products: Product[] = [
     id: "tb-500",
     name: "TB-500",
     slug: "tb-500",
-    category: "recovery",
+    category: "recovery-healing",
     price: 79.99,
     description:
       "Thymosin Beta-4 is a naturally occurring peptide found in virtually all human and animal cells. TB-500 is a synthetic version studied for its role in tissue repair signaling, inflammatory response modulation, and cellular migration mechanisms.",
@@ -85,7 +85,7 @@ export const products: Product[] = [
     id: "kpv",
     name: "KPV",
     slug: "kpv",
-    category: "recovery",
+    category: "recovery-healing",
     price: 69.99,
     description:
       "KPV is a tripeptide derived from alpha-MSH with notable anti-inflammatory properties observed in preclinical research. It targets inflammatory pathways at the cellular level, with particular research interest in gut inflammation and dermatological models.",
@@ -126,7 +126,7 @@ export const products: Product[] = [
     id: "ghk-cu",
     name: "GHK-Cu",
     slug: "ghk-cu",
-    category: "anti-aging",
+    category: "longevity-brain",
     price: 94.99,
     compareAtPrice: 119.99,
     description:
@@ -166,7 +166,7 @@ export const products: Product[] = [
     id: "epithalon",
     name: "Epithalon",
     slug: "epithalon",
-    category: "anti-aging",
+    category: "longevity-brain",
     price: 119.99,
     description:
       "Epithalon (Epitalon) is a synthetic tetrapeptide researched for its ability to activate telomerase, the enzyme responsible for maintaining telomere length — one of the most fundamental markers studied in biological aging research.",
@@ -205,7 +205,7 @@ export const products: Product[] = [
     id: "foxo4-dri",
     name: "FOXO4-DRI",
     slug: "foxo4-dri",
-    category: "anti-aging",
+    category: "longevity-brain",
     price: 149.99,
     description:
       "FOXO4-DRI is a modified peptide researched for its ability to selectively induce apoptosis in senescent cells while leaving healthy cells unaffected in preclinical models — making it one of the most studied senolytic research compounds.",
@@ -246,7 +246,7 @@ export const products: Product[] = [
     id: "cjc-1295",
     name: "CJC-1295",
     slug: "cjc-1295",
-    category: "performance",
+    category: "growth-hormone-anti-aging",
     price: 99.99,
     compareAtPrice: 124.99,
     description:
@@ -286,7 +286,7 @@ export const products: Product[] = [
     id: "ipamorelin",
     name: "Ipamorelin",
     slug: "ipamorelin",
-    category: "performance",
+    category: "growth-hormone-anti-aging",
     price: 84.99,
     description:
       "Ipamorelin is a selective growth hormone secretagogue studied for its ability to stimulate GH release without significantly affecting cortisol or prolactin levels — making it one of the most selective GH research peptides available.",
@@ -325,7 +325,7 @@ export const products: Product[] = [
     id: "tesamorelin",
     name: "Tesamorelin",
     slug: "tesamorelin",
-    category: "performance",
+    category: "growth-hormone-anti-aging",
     price: 129.99,
     description:
       "Tesamorelin is a GHRH analog extensively studied in clinical trials for its effects on visceral adipose tissue. It has the most extensive human clinical trial data of any GHRH analog currently available for research.",
@@ -366,7 +366,7 @@ export const products: Product[] = [
     id: "aod-9604",
     name: "AOD-9604",
     slug: "aod-9604",
-    category: "weight-management",
+    category: "glp1-weight-loss",
     price: 74.99,
     description:
       "AOD-9604 is a modified fragment of human growth hormone (HGH fragment 177-191) studied specifically for fat metabolism pathways without the growth-promoting effects observed with full HGH in research models.",
@@ -405,7 +405,7 @@ export const products: Product[] = [
     id: "5-amino-1mq",
     name: "5-Amino-1MQ",
     slug: "5-amino-1mq",
-    category: "weight-management",
+    category: "glp1-weight-loss",
     price: 89.99,
     description:
       "5-Amino-1MQ is a small molecule that blocks NNMT, a key enzyme in fat cell metabolism. Research demonstrates that inhibiting NNMT shifts adipocyte activity from lipid storage toward energy expenditure pathways.",
@@ -444,7 +444,7 @@ export const products: Product[] = [
     id: "mots-c",
     name: "MOTS-c",
     slug: "mots-c",
-    category: "weight-management",
+    category: "glp1-weight-loss",
     price: 109.99,
     description:
       "MOTS-c is a mitochondrial-derived peptide studied as an exercise mimetic — research demonstrates AMPK activation and improved metabolic homeostasis in preclinical models.",

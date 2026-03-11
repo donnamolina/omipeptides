@@ -7,14 +7,18 @@ import { Trash2, ArrowLeft, ShoppingBag, Check } from "lucide-react";
 import { motion } from "framer-motion";
 
 const categoryProductImages: Record<string, string> = {
-  recovery: "/images/products/recovery-category.png",
-  "anti-aging": "/images/products/anti-aging-category.png",
-  performance: "/images/products/performance-category.png",
-  "weight-management": "/images/products/weight-management-category.png",
+  "recovery-healing": "/images/products/recovery-category.png",
+  "longevity-brain": "/images/products/anti-aging-category.png",
+  "growth-hormone-anti-aging": "/images/products/performance-category.png",
+  "glp1-weight-loss": "/images/products/weight-management-category.png",
+  "skin-beauty": "/images/products/anti-aging-category.png",
+  "metabolic-other": "/images/products/weight-management-category.png",
+  "blends-stacks": "/images/products/performance-category.png",
+  "accessories-supplies": "/images/products/recovery-category.png",
 };
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { useCartStore, formatPrice } from "@/store/cart";
+import { useCartStore, formatPrice, getItemPrice } from "@/store/cart";
 
 export default function CartPage() {
   const [mounted, setMounted] = useState(false);
@@ -80,7 +84,7 @@ export default function CartPage() {
                           href={`/products/${item.product.slug}`}
                           className="font-heading text-sm font-bold text-midnight-ink hover:text-coral-punch transition-colors"
                         >
-                          {item.product.name}
+                          {item.product.name}{item.sizeLabel ? ` — ${item.sizeLabel}` : ""}
                         </Link>
                         <p className="text-xs text-neutral-400">
                           {item.product.shortDescription}
@@ -92,7 +96,7 @@ export default function CartPage() {
                         <div className="flex items-center rounded-[var(--radius-sm)] border border-neutral-200">
                           <button
                             onClick={() =>
-                              updateQuantity(item.productId, item.quantity - 1)
+                              updateQuantity(item.variantId ? `${item.productId}:${item.variantId}` : item.productId, item.quantity - 1)
                             }
                             aria-label="Decrease quantity"
                             className="flex h-8 w-8 items-center justify-center text-sm text-neutral-600 hover:text-midnight-ink"
@@ -104,7 +108,7 @@ export default function CartPage() {
                           </span>
                           <button
                             onClick={() =>
-                              updateQuantity(item.productId, item.quantity + 1)
+                              updateQuantity(item.variantId ? `${item.productId}:${item.variantId}` : item.productId, item.quantity + 1)
                             }
                             aria-label="Increase quantity"
                             className="flex h-8 w-8 items-center justify-center text-sm text-neutral-600 hover:text-midnight-ink"
@@ -115,10 +119,10 @@ export default function CartPage() {
 
                         <div className="flex items-center gap-3">
                           <span className="font-mono text-sm font-semibold text-midnight-ink">
-                            {formatPrice(item.product.price * item.quantity, currency)}
+                            {formatPrice(getItemPrice(item) * item.quantity, currency)}
                           </span>
                           <button
-                            onClick={() => removeItem(item.productId)}
+                            onClick={() => removeItem(item.variantId ? `${item.productId}:${item.variantId}` : item.productId)}
                             aria-label={`Remove ${item.product.name} from cart`}
                             className="text-neutral-400 transition-colors hover:text-error"
                           >

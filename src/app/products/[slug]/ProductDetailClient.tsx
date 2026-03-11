@@ -5,10 +5,14 @@ import Image from "next/image";
 import { ChevronRight, ChevronDown, ShoppingBag, Shield, FlaskConical, Check, AlertTriangle, FileText } from "lucide-react";
 
 const categoryProductImages: Record<string, string> = {
-  recovery: "/images/products/recovery-category.png",
-  "anti-aging": "/images/products/anti-aging-category.png",
-  performance: "/images/products/performance-category.png",
-  "weight-management": "/images/products/weight-management-category.png",
+  "recovery-healing": "/images/products/recovery-category.png",
+  "longevity-brain": "/images/products/anti-aging-category.png",
+  "growth-hormone-anti-aging": "/images/products/performance-category.png",
+  "glp1-weight-loss": "/images/products/weight-management-category.png",
+  "skin-beauty": "/images/products/anti-aging-category.png",
+  "metabolic-other": "/images/products/weight-management-category.png",
+  "blends-stacks": "/images/products/performance-category.png",
+  "accessories-supplies": "/images/products/recovery-category.png",
 };
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,13 +22,17 @@ import ProductCard from "@/components/products/ProductCard";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import { useCartStore, formatPrice } from "@/store/cart";
 import { createClient } from "@/lib/supabase/client";
-import { Product, ProductCategory } from "@/types";
+import { Product, ProductCategory, ProductVariant } from "@/types";
 
 const categoryLabels: Record<string, string> = {
-  recovery: "Recovery",
-  "anti-aging": "Anti-Aging",
-  performance: "Performance",
-  "weight-management": "Weight Management",
+  "recovery-healing": "Recovery & Healing",
+  "longevity-brain": "Longevity & Brain",
+  "growth-hormone-anti-aging": "Growth Hormone & Anti-Aging",
+  "glp1-weight-loss": "GLP-1 & Weight Loss",
+  "skin-beauty": "Skin & Beauty",
+  "metabolic-other": "Metabolic & Other",
+  "blends-stacks": "Blends & Stacks",
+  "accessories-supplies": "Accessories & Supplies",
 };
 
 function mapProduct(row: Record<string, unknown>): Product {
@@ -59,6 +67,8 @@ function mapProduct(row: Record<string, unknown>): Product {
 export default function ProductDetailClient({ slug }: { slug: string }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [variants, setVariants] = useState<ProductVariant[]>([]);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
   const [loading, setLoading] = useState(true);
   const addItem = useCartStore((s) => s.addItem);
   const currency = useCartStore((s) => s.currency);
@@ -78,6 +88,29 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
 
       if (!error && data) {
         const p = mapProduct(data);
+
+        // Fetch product variants
+        const { data: variantData } = await supabase
+          .from("product_variants")
+          .select("*")
+          .eq("product_id", data.id)
+          .order("display_order");
+
+        if (variantData && variantData.length > 0) {
+          const mapped: ProductVariant[] = variantData.map((v: Record<string, unknown>) => ({
+            id: v.id as string,
+            productId: v.product_id as string,
+            sizeLabel: v.size_label as string,
+            price: Number(v.price),
+            compareAtPrice: v.compare_at_price ? Number(v.compare_at_price) : undefined,
+            inStock: v.in_stock as boolean,
+            displayOrder: v.display_order as number,
+          }));
+          p.variants = mapped;
+          setVariants(mapped);
+          setSelectedVariant(mapped[0]);
+        }
+
         setProduct(p);
 
         // Fetch related products
@@ -128,8 +161,11 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
     );
   }
 
+  const displayPrice = selectedVariant ? selectedVariant.price : product.price;
+  const displayCompareAtPrice = selectedVariant ? selectedVariant.compareAtPrice : product.compareAtPrice;
+
   const handleAddToCart = () => {
-    addItem(product, quantity);
+    addItem(product, quantity, selectedVariant?.id, selectedVariant?.sizeLabel, selectedVariant?.price);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -226,14 +262,39 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 {/* Price */}
                 <div className="mt-8 flex items-baseline gap-3">
                   <span className="text-3xl font-bold text-midnight-ink">
-                    {formatPrice(product.price, currency)}
+                    {formatPrice(displayPrice, currency)}
                   </span>
-                  {product.compareAtPrice && (
+                  {displayCompareAtPrice && (
                     <span className="text-lg text-neutral-400 line-through">
-                      {formatPrice(product.compareAtPrice, currency)}
+                      {formatPrice(displayCompareAtPrice, currency)}
                     </span>
                   )}
                 </div>
+
+                {/* Variant Selector */}
+                {variants.length > 0 && (
+                  <div className="mt-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
+                      Size
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {variants.map((variant) => (
+                        <button
+                          key={variant.id}
+                          onClick={() => setSelectedVariant(variant)}
+                          disabled={!variant.inStock}
+                          className={`rounded-[var(--radius-md)] px-4 py-2 text-sm font-medium transition-all ${
+                            selectedVariant?.id === variant.id
+                              ? "bg-midnight-ink text-white"
+                              : "border border-neutral-200 text-neutral-600 hover:border-neutral-400"
+                          } ${!variant.inStock ? "opacity-40 cursor-not-allowed" : ""}`}
+                        >
+                          {variant.sizeLabel} — {formatPrice(variant.price, currency)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Quantity + ATC */}
                 <div className="mt-6 flex items-center gap-4">

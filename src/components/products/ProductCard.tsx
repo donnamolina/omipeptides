@@ -8,24 +8,36 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const categoryProductImages: Record<string, string> = {
-  recovery: "/images/products/recovery-category.png",
-  "anti-aging": "/images/products/anti-aging-category.png",
-  performance: "/images/products/performance-category.png",
-  "weight-management": "/images/products/weight-management-category.png",
+  "recovery-healing": "/images/products/recovery-category.png",
+  "longevity-brain": "/images/products/anti-aging-category.png",
+  "growth-hormone-anti-aging": "/images/products/performance-category.png",
+  "glp1-weight-loss": "/images/products/weight-management-category.png",
+  "skin-beauty": "/images/products/anti-aging-category.png",
+  "metabolic-other": "/images/products/weight-management-category.png",
+  "blends-stacks": "/images/products/performance-category.png",
+  "accessories-supplies": "/images/products/recovery-category.png",
 };
 
 const categoryColors: Record<string, string> = {
-  recovery: "#4ECDC4",
-  "anti-aging": "#C49CFF",
-  performance: "#FF8A5C",
-  "weight-management": "#7ED957",
+  "recovery-healing": "#4ECDC4",
+  "longevity-brain": "#C49CFF",
+  "growth-hormone-anti-aging": "#FF8A5C",
+  "glp1-weight-loss": "#7ED957",
+  "skin-beauty": "#C49CFF",
+  "metabolic-other": "#FF8A5C",
+  "blends-stacks": "#4ECDC4",
+  "accessories-supplies": "#9B9189",
 };
 
 const categoryLabels: Record<string, string> = {
-  recovery: "Recovery",
-  "anti-aging": "Anti-Aging",
-  performance: "Performance",
-  "weight-management": "Weight Mgmt",
+  "recovery-healing": "Recovery",
+  "longevity-brain": "Longevity",
+  "growth-hormone-anti-aging": "Growth Hormone",
+  "glp1-weight-loss": "Weight Loss",
+  "skin-beauty": "Skin & Beauty",
+  "metabolic-other": "Metabolic",
+  "blends-stacks": "Blends",
+  "accessories-supplies": "Accessories",
 };
 
 interface ProductCardProps {

@@ -11,10 +11,14 @@ import { createClient } from "@/lib/supabase/client";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 const categories = [
-  { label: "Recovery", href: "/products?category=recovery", color: "#4ECDC4" },
-  { label: "Anti-Aging", href: "/products?category=anti-aging", color: "#C49CFF" },
-  { label: "Performance", href: "/products?category=performance", color: "#FF8A5C" },
-  { label: "Weight Management", href: "/products?category=weight-management", color: "#7ED957" },
+  { label: "GLP-1 / Weight Loss", href: "/products?category=glp1-weight-loss" },
+  { label: "Recovery & Healing", href: "/products?category=recovery-healing" },
+  { label: "Growth Hormone / Anti-Aging", href: "/products?category=growth-hormone-anti-aging" },
+  { label: "Longevity & Brain", href: "/products?category=longevity-brain" },
+  { label: "Skin & Beauty", href: "/products?category=skin-beauty" },
+  { label: "Metabolic & Other", href: "/products?category=metabolic-other" },
+  { label: "Blends & Stacks", href: "/products?category=blends-stacks" },
+  { label: "Accessories & Supplies", href: "/products?category=accessories-supplies" },
 ];
 
 export default function Navbar() {
@@ -156,12 +160,8 @@ export default function Navbar() {
                           key={cat.href}
                           href={cat.href}
                           onClick={() => setCatOpen(false)}
-                          className="group/item flex items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                          className="block rounded-[var(--radius-sm)] px-3 py-2 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
                         >
-                          <span
-                            className="h-2 w-2 rounded-full transition-transform duration-200 group-hover/item:scale-125"
-                            style={{ background: cat.color }}
-                          />
                           {cat.label}
                         </Link>
                       ))}
@@ -375,12 +375,8 @@ export default function Navbar() {
                               key={cat.href}
                               href={cat.href}
                               onClick={() => setMobileOpen(false)}
-                              className="flex items-center gap-2 text-base font-medium text-neutral-600 transition-colors hover:text-coral-punch"
+                              className="text-base font-medium text-neutral-600 transition-colors hover:text-coral-punch"
                             >
-                              <span
-                                className="h-1.5 w-1.5 rounded-full"
-                                style={{ background: cat.color }}
-                              />
                               {cat.label}
                             </Link>
                           ))}

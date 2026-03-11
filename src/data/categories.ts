@@ -4,7 +4,7 @@ export const categories: Category[] = [
   {
     id: "recovery",
     name: "Recovery",
-    slug: "recovery",
+    slug: "recovery-healing",
     description:
       "Peptides studied for their role in tissue repair mechanisms, inflammatory response modulation, and gastrointestinal research.",
     tagline: "Advanced tissue repair research.",
@@ -15,7 +15,7 @@ export const categories: Category[] = [
   {
     id: "anti-aging",
     name: "Anti-Aging",
-    slug: "anti-aging",
+    slug: "longevity-brain",
     description:
       "Peptides investigated for cellular repair pathways, collagen synthesis mechanisms, and telomere biology research.",
     tagline: "Cellular longevity research.",
@@ -26,7 +26,7 @@ export const categories: Category[] = [
   {
     id: "performance",
     name: "Performance",
-    slug: "performance",
+    slug: "growth-hormone-anti-aging",
     description:
       "Peptides researched for growth hormone secretagogue activity, lean mass metabolism, and physical performance pathways.",
     tagline: "Performance optimization research.",
@@ -37,7 +37,7 @@ export const categories: Category[] = [
   {
     id: "weight-management",
     name: "Weight Management",
-    slug: "weight-management",
+    slug: "glp1-weight-loss",
     description:
       "Peptides studied for fat metabolism mechanisms, AMPK pathway activation, and metabolic homeostasis research.",
     tagline: "Metabolic pathway research.",

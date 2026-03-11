@@ -1,4 +1,22 @@
-export type ProductCategory = 'recovery' | 'anti-aging' | 'performance' | 'weight-management';
+export type ProductCategory =
+  | 'glp1-weight-loss'
+  | 'recovery-healing'
+  | 'growth-hormone-anti-aging'
+  | 'longevity-brain'
+  | 'skin-beauty'
+  | 'metabolic-other'
+  | 'blends-stacks'
+  | 'accessories-supplies';
+
+export interface ProductVariant {
+  id: string;
+  productId: string;
+  sizeLabel: string;
+  price: number;
+  compareAtPrice?: number;
+  inStock: boolean;
+  displayOrder: number;
+}
 
 export interface Product {
   id: string;
@@ -30,12 +48,16 @@ export interface Product {
   rating: number;
   reviewCount: number;
   relatedSlugs: string[];
+  variants?: ProductVariant[];
 }
 
 export interface CartItem {
   productId: string;
   product: Product;
   quantity: number;
+  variantId?: string;
+  sizeLabel?: string;
+  variantPrice?: number;
 }
 
 export interface Cart {
@@ -71,6 +93,16 @@ export interface Author {
   role: string;
 }
 
+export interface CatalogCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  displayOrder: number;
+  parentLandingCategory: string | null;
+}
+
+// Legacy type for landing page bento grid
 export interface Category {
   id: string;
   name: string;

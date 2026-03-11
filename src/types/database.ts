@@ -14,7 +14,7 @@ export type Database = {
           id: string;
           name: string;
           slug: string;
-          category: "recovery" | "anti-aging" | "performance" | "weight-management";
+          category: "glp1-weight-loss" | "recovery-healing" | "growth-hormone-anti-aging" | "longevity-brain" | "skin-beauty" | "metabolic-other" | "blends-stacks" | "accessories-supplies";
           price: number;
           compare_at_price: number | null;
           description: string;
@@ -45,7 +45,7 @@ export type Database = {
           id?: string;
           name: string;
           slug: string;
-          category: "recovery" | "anti-aging" | "performance" | "weight-management";
+          category: "glp1-weight-loss" | "recovery-healing" | "growth-hormone-anti-aging" | "longevity-brain" | "skin-beauty" | "metabolic-other" | "blends-stacks" | "accessories-supplies";
           price: number;
           compare_at_price?: number | null;
           description: string;
@@ -76,7 +76,7 @@ export type Database = {
           id?: string;
           name?: string;
           slug?: string;
-          category?: "recovery" | "anti-aging" | "performance" | "weight-management";
+          category?: "glp1-weight-loss" | "recovery-healing" | "growth-hormone-anti-aging" | "longevity-brain" | "skin-beauty" | "metabolic-other" | "blends-stacks" | "accessories-supplies";
           price?: number;
           compare_at_price?: number | null;
           description?: string;
@@ -354,6 +354,87 @@ export type Database = {
           rating?: number;
           verified?: boolean;
           date?: string;
+          created_at?: string;
+        };
+      };
+      categories: {
+        Row: {
+          id: string;
+          name: string;
+          slug: string;
+          description: string | null;
+          display_order: number;
+          parent_landing_category: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          slug: string;
+          description?: string | null;
+          display_order?: number;
+          parent_landing_category?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          slug?: string;
+          description?: string | null;
+          display_order?: number;
+          parent_landing_category?: string | null;
+          created_at?: string;
+        };
+      };
+      product_variants: {
+        Row: {
+          id: string;
+          product_id: string;
+          size_label: string;
+          price: number;
+          compare_at_price: number | null;
+          in_stock: boolean;
+          display_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          product_id: string;
+          size_label: string;
+          price: number;
+          compare_at_price?: number | null;
+          in_stock?: boolean;
+          display_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          product_id?: string;
+          size_label?: string;
+          price?: number;
+          compare_at_price?: number | null;
+          in_stock?: boolean;
+          display_order?: number;
+          created_at?: string;
+        };
+      };
+      waitlist: {
+        Row: {
+          id: string;
+          email: string;
+          product_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          product_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          product_id?: string;
           created_at?: string;
         };
       };

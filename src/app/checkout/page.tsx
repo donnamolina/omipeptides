@@ -5,14 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Lock, Check } from "lucide-react";
-import { useCartStore, formatPrice } from "@/store/cart";
+import { useCartStore, formatPrice, getItemPrice } from "@/store/cart";
 import { createClient } from "@/lib/supabase/client";
 
 const categoryProductImages: Record<string, string> = {
-  recovery: "/images/products/recovery-category.png",
-  "anti-aging": "/images/products/anti-aging-category.png",
-  performance: "/images/products/performance-category.png",
-  "weight-management": "/images/products/weight-management-category.png",
+  "recovery-healing": "/images/products/recovery-category.png",
+  "longevity-brain": "/images/products/anti-aging-category.png",
+  "growth-hormone-anti-aging": "/images/products/performance-category.png",
+  "glp1-weight-loss": "/images/products/weight-management-category.png",
+  "skin-beauty": "/images/products/anti-aging-category.png",
+  "metabolic-other": "/images/products/weight-management-category.png",
+  "blends-stacks": "/images/products/performance-category.png",
+  "accessories-supplies": "/images/products/recovery-category.png",
 };
 
 function generateOrderNumber() {
@@ -121,11 +125,11 @@ export default function CheckoutPage() {
       // Create order items
       const orderItems = items.map((item) => ({
         order_id: order.id,
-        product_name: item.product.name,
+        product_name: item.sizeLabel ? `${item.product.name} — ${item.sizeLabel}` : item.product.name,
         product_slug: item.product.slug,
         quantity: item.quantity,
-        unit_price: item.product.price,
-        total_price: item.product.price * item.quantity,
+        unit_price: getItemPrice(item),
+        total_price: getItemPrice(item) * item.quantity,
       }));
 
       const { error: itemsError } = await supabase
@@ -318,12 +322,12 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-medium text-midnight-ink">
-                          {item.product.name}
+                          {item.product.name}{item.sizeLabel ? ` — ${item.sizeLabel}` : ""}
                         </p>
                         <p className="text-xs text-neutral-400">Qty: {item.quantity}</p>
                       </div>
                       <span className="font-mono text-sm text-midnight-ink">
-                        {formatPrice(item.product.price * item.quantity, currency)}
+                        {formatPrice(getItemPrice(item) * item.quantity, currency)}
                       </span>
                     </div>
                   ))}
