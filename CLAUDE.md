@@ -36,7 +36,7 @@ Three fonts loaded via `next/font/google` in `layout.tsx`:
 
 ### State Management
 
-Zustand store in `src/store/cart.ts` with `persist` middleware (localStorage key: `"omipeptides-cart"`). The store holds both cart items and the selected currency (`"USD" | "THB"`).
+Zustand store in `src/store/cart.ts` with `persist` middleware (localStorage key: `"omipeptides-cart"`). The store holds both cart items and the selected currency (`"USD" | "DOP"`).
 
 Uses a `_hydrated` flag with `onRehydrateStorage` callback to prevent hydration mismatches. Any component reading cart state must use a `mounted` state guard:
 
@@ -50,7 +50,7 @@ Failing to do this breaks client-side navigation entirely.
 
 ### Currency System
 
-`formatPrice(amountUSD, currency)` is exported from `src/store/cart.ts`. All prices are stored in USD; THB conversion uses a hardcoded rate (×34). Every price display across the site must use `formatPrice()` — never raw `$${price.toFixed(2)}`.
+`formatPrice(amountUSD, currency)` is exported from `src/store/cart.ts`. All prices are stored in USD; DOP conversion uses a live rate fetched from ExchangeRate-API (cached 24h, fallback 63). The rate is fetched server-side in the root layout and passed to a `DopRateProvider` client component. Every price display across the site must use `formatPrice()` — never raw `$${price.toFixed(2)}`.
 
 ### Static Data
 

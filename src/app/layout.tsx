@@ -61,18 +61,27 @@ export const metadata: Metadata = {
 };
 
 import AgeVerificationGate from "@/components/shared/AgeVerificationGate";
+import ExitIntentPopup from "@/components/shared/ExitIntentPopup";
+import CartDrawer from "@/components/cart/CartDrawer";
+import DopRateProvider from "@/components/shared/DopRateProvider";
+import { getDopRate } from "@/lib/exchange-rate";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const dopRate = await getDopRate();
+
   return (
     <html lang="en">
       <body
         className={`${syne.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} antialiased`}
       >
+        <DopRateProvider rate={dopRate} />
         <AgeVerificationGate />
+        <ExitIntentPopup />
+        <CartDrawer />
         {children}
       </body>
     </html>

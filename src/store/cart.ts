@@ -2,13 +2,18 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Product, CartItem } from "@/types";
 
-export type Currency = "USD" | "THB";
+export type Currency = "USD" | "DOP";
 
-const THB_RATE = 34;
+let _dopRate = 63; // fallback, overwritten by server-fetched rate
+
+/** Called once from the root layout to set the live rate */
+export function setDopRate(rate: number) {
+  _dopRate = rate;
+}
 
 export function formatPrice(amountUSD: number, currency: Currency): string {
-  if (currency === "THB") {
-    return `฿${(amountUSD * THB_RATE).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  if (currency === "DOP") {
+    return `RD$${(amountUSD * _dopRate).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   }
   return `$${amountUSD.toFixed(2)}`;
 }
@@ -22,6 +27,7 @@ interface CartStore {
   items: CartItem[];
   currency: Currency;
   _hydrated: boolean;
+  isCartOpen: boolean;
   addItem: (product: Product, quantity?: number, variantId?: string, sizeLabel?: string, variantPrice?: number) => void;
   removeItem: (cartKey: string) => void;
   updateQuantity: (cartKey: string, quantity: number) => void;
@@ -30,6 +36,8 @@ interface CartStore {
   getItemCount: () => number;
   getSubtotal: () => number;
   setHydrated: () => void;
+  openCart: () => void;
+  closeCart: () => void;
 }
 
 /** Unique key for a cart item: productId + variantId */
@@ -43,8 +51,11 @@ export const useCartStore = create<CartStore>()(
       items: [],
       currency: "USD" as Currency,
       _hydrated: false,
+      isCartOpen: false,
 
       setHydrated: () => set({ _hydrated: true }),
+      openCart: () => set({ isCartOpen: true }),
+      closeCart: () => set({ isCartOpen: false }),
 
       addItem: (product, quantity = 1, variantId, sizeLabel, variantPrice) => {
         set((state) => {
@@ -54,6 +65,7 @@ export const useCartStore = create<CartStore>()(
           );
           if (existing) {
             return {
+              isCartOpen: true,
               items: state.items.map((item) =>
                 cartKey(item.productId, item.variantId) === key
                   ? { ...item, quantity: item.quantity + quantity }
@@ -62,6 +74,7 @@ export const useCartStore = create<CartStore>()(
             };
           }
           return {
+            isCartOpen: true,
             items: [
               ...state.items,
               { productId: product.id, product, quantity, variantId, sizeLabel, variantPrice },
@@ -109,6 +122,10 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "omipeptides-cart",
+      partialize: (state) => ({
+        items: state.items,
+        currency: state.currency,
+      }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated();
       },

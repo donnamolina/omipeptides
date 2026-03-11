@@ -33,6 +33,7 @@ export default function Navbar() {
   const items = useCartStore((s) => s.items);
   const currency = useCartStore((s) => s.currency);
   const setCurrency = useCartStore((s) => s.setCurrency);
+  const openCart = useCartStore((s) => s.openCart);
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
   const catRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -252,20 +253,29 @@ export default function Navbar() {
                 </>
               )}
 
-              {/* Currency Toggle */}
+              {/* Currency Toggle — dropdown on mobile, toggle on desktop */}
+              <select
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value as Currency)}
+                className="flex md:hidden h-10 rounded-[var(--radius-md)] border border-neutral-200 bg-transparent px-2 text-xs font-semibold text-neutral-600 outline-none"
+                aria-label="Select currency"
+              >
+                <option value="USD">USD</option>
+                <option value="DOP">DOP</option>
+              </select>
               <button
-                onClick={() => setCurrency(currency === "USD" ? "THB" : "USD")}
-                className="flex h-10 items-center gap-1 rounded-[var(--radius-md)] border border-neutral-200 px-2.5 text-xs font-semibold text-neutral-600 transition-opacity hover:opacity-70"
-                title={`Switch to ${currency === "USD" ? "Thai Baht" : "US Dollar"}`}
-                aria-label={`Currency: ${currency}. Switch to ${currency === "USD" ? "Thai Baht" : "US Dollar"}`}
+                onClick={() => setCurrency(currency === "USD" ? "DOP" : "USD")}
+                className="hidden md:flex h-10 items-center gap-1 rounded-[var(--radius-md)] border border-neutral-200 px-2.5 text-xs font-semibold text-neutral-600 transition-opacity hover:opacity-70"
+                title={`Switch to ${currency === "USD" ? "Dominican Pesos" : "US Dollar"}`}
+                aria-label={`Currency: ${currency}. Switch to ${currency === "USD" ? "Dominican Pesos" : "US Dollar"}`}
               >
                 <span className={cn("transition-opacity", currency === "USD" ? "opacity-100" : "opacity-40")}>$</span>
                 <span className="text-neutral-300">/</span>
-                <span className={cn("transition-opacity", currency === "THB" ? "opacity-100" : "opacity-40")}>฿</span>
+                <span className={cn("transition-opacity", currency === "DOP" ? "opacity-100" : "opacity-40")}>RD$</span>
               </button>
 
-              <Link
-                href="/cart"
+              <button
+                onClick={openCart}
                 aria-label="Shopping cart"
                 className="relative flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] transition-colors hover:bg-neutral-100"
               >
@@ -273,17 +283,18 @@ export default function Navbar() {
                 <AnimatePresence>
                   {displayCount > 0 && (
                     <motion.span
+                      key={displayCount}
                       initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
+                      animate={{ scale: [0, 1.2, 1] }}
                       exit={{ scale: 0 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                      className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-coral-punch text-[10px] font-semibold text-white"
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-coral-punch text-[10px] font-bold text-white"
                     >
                       {displayCount}
                     </motion.span>
                   )}
                 </AnimatePresence>
-              </Link>
+              </button>
 
               {/* Mobile Menu Button */}
               <button

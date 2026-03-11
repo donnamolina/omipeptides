@@ -229,7 +229,7 @@ export default function AccountPage() {
                       className="h-12 w-full rounded-[var(--radius-md)] border border-neutral-200 bg-surface-white px-4 text-sm text-midnight-ink outline-none transition-shadow focus:shadow-[0_0_0_2px_rgba(255,92,57,0.3)]"
                     >
                       <option value="USD">USD ($)</option>
-                      <option value="THB">THB (฿)</option>
+                      <option value="DOP">DOP (RD$)</option>
                     </select>
                   </div>
                 </div>
@@ -263,7 +263,7 @@ export default function AccountPage() {
                       type="text"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      placeholder="Bangkok"
+                      placeholder="Santo Domingo"
                       className="h-12 w-full rounded-[var(--radius-md)] border border-neutral-200 bg-surface-white px-4 text-sm text-midnight-ink outline-none transition-shadow placeholder:text-neutral-400 focus:shadow-[0_0_0_2px_rgba(255,92,57,0.3)]"
                     />
                   </div>
@@ -302,7 +302,7 @@ export default function AccountPage() {
                       type="text"
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
-                      placeholder="Thailand"
+                      placeholder="Dominican Republic"
                       className="h-12 w-full rounded-[var(--radius-md)] border border-neutral-200 bg-surface-white px-4 text-sm text-midnight-ink outline-none transition-shadow placeholder:text-neutral-400 focus:shadow-[0_0_0_2px_rgba(255,92,57,0.3)]"
                     />
                   </div>

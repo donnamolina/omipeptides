@@ -52,8 +52,8 @@ function formatDate(dateStr: string): string {
 }
 
 function formatCurrency(amount: number, currency: string): string {
-  if (currency === "THB") {
-    return `฿${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  if (currency === "DOP") {
+    return `RD$${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
   return `$${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
