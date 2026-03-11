@@ -67,7 +67,7 @@ export default function ScienceSection() {
     <section className="relative overflow-hidden bg-midnight-ink py-24 lg:py-32 px-6 lg:px-8">
       {/* ---------- Floating particles (deterministic) ---------- */}
       <div className="pointer-events-none absolute inset-0">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {Array.from({ length: 8 }).map((_, i) => (
           <motion.div
             key={i}
             className="absolute h-1 w-1 rounded-full bg-white/[0.05]"

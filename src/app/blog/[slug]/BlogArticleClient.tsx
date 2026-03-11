@@ -150,6 +150,8 @@ export default function BlogArticleClient({ slug }: { slug: string }) {
               src="/images/blog/article-hero-1.png"
               alt={`Featured image for ${post.title}`}
               fill
+              sizes="(max-width: 1024px) 100vw, 896px"
+              priority
               className="object-cover"
             />
           </div>

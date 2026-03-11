@@ -69,6 +69,7 @@ export default function ScrollReveal({
         ease: [0.25, 0.1, 0.25, 1],
       }}
       className={className}
+      style={{ willChange: "transform, opacity" }}
     >
       {children}
     </motion.div>

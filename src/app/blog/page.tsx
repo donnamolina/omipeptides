@@ -87,6 +87,8 @@ export default async function BlogPage() {
                       src={blogImages[0]}
                       alt={featured.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority
                       className="object-cover"
                     />
                   </div>
@@ -129,6 +131,8 @@ export default async function BlogPage() {
                         src={blogImages[(i + 1) % blogImages.length]}
                         alt={`Featured image for ${post.title}`}
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        loading="lazy"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>

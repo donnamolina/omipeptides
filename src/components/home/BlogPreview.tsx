@@ -47,6 +47,8 @@ export default function BlogPreview({ posts: blogPosts }: { posts: BlogPost[] })
                     src={blogImages[i % blogImages.length]}
                     alt={`Featured image for ${post.title}`}
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>

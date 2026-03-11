@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import nextDynamic from "next/dynamic";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +15,13 @@ import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import CategoryShowcase from "@/components/home/CategoryShowcase";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
-import HowItWorks from "@/components/home/HowItWorks";
-import ScienceSection from "@/components/home/ScienceSection";
-import TestimonialCarousel from "@/components/home/TestimonialCarousel";
-import BlogPreview from "@/components/home/BlogPreview";
-import NewsletterCTA from "@/components/home/NewsletterCTA";
 import { getFeaturedProducts, getTestimonials, getBlogPosts } from "@/lib/supabase/queries";
+
+const HowItWorks = nextDynamic(() => import("@/components/home/HowItWorks"));
+const ScienceSection = nextDynamic(() => import("@/components/home/ScienceSection"));
+const TestimonialCarousel = nextDynamic(() => import("@/components/home/TestimonialCarousel"));
+const BlogPreview = nextDynamic(() => import("@/components/home/BlogPreview"));
+const NewsletterCTA = nextDynamic(() => import("@/components/home/NewsletterCTA"));
 
 export default async function Home() {
   let featuredProducts: Awaited<ReturnType<typeof getFeaturedProducts>> = [];
