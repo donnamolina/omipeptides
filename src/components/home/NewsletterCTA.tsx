@@ -99,12 +99,12 @@ export default function NewsletterCTA() {
         }
         @keyframes buttonGlow {
           0%, 100% {
-            box-shadow: 0 0 8px 0 rgba(197, 245, 54, 0.3),
-                         0 0 20px 0 rgba(197, 245, 54, 0.1);
+            box-shadow: 0 0 8px 0 rgba(255, 92, 57, 0.3),
+                         0 0 20px 0 rgba(255, 92, 57, 0.1);
           }
           50% {
-            box-shadow: 0 0 16px 4px rgba(197, 245, 54, 0.5),
-                         0 0 40px 8px rgba(197, 245, 54, 0.15);
+            box-shadow: 0 0 16px 4px rgba(255, 92, 57, 0.4),
+                         0 0 40px 8px rgba(255, 92, 57, 0.15);
           }
         }
       `}</style>
@@ -185,7 +185,7 @@ export default function NewsletterCTA() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="h-13 flex-1 rounded-[var(--radius-md)] border border-neutral-200 bg-surface-white px-5 text-sm text-midnight-ink outline-none transition-shadow placeholder:text-neutral-400 focus:shadow-[0_0_0_2px_rgba(197,245,54,0.4)] sm:rounded-r-none sm:border-r-0"
+                  className="h-13 flex-1 rounded-[var(--radius-md)] border border-neutral-200 bg-surface-white px-5 text-sm text-midnight-ink outline-none transition-shadow placeholder:text-neutral-400 focus:shadow-[0_0_0_2px_rgba(255,92,57,0.3)] sm:rounded-r-none sm:border-r-0"
                 />
                 <button
                   type="submit"

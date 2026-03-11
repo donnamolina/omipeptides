@@ -5,10 +5,6 @@ import type { Database } from "@/types/database";
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 type BlogPostRow = Database["public"]["Tables"]["blog_posts"]["Row"];
 type TestimonialRow = Database["public"]["Tables"]["testimonials"]["Row"];
-// Order types used in account pages
-type _OrderInsert = Database["public"]["Tables"]["orders"]["Insert"];
-type _OrderItemInsert = Database["public"]["Tables"]["order_items"]["Insert"];
-
 // ---------------------------------------------------------------------------
 // Mappers — convert snake_case DB rows to camelCase frontend types
 // ---------------------------------------------------------------------------

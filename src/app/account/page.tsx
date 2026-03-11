@@ -7,18 +7,6 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { User, Package, ChevronRight, Check, AlertCircle, Loader2 } from "lucide-react";
 
-interface Profile {
-  id: string;
-  full_name: string | null;
-  phone: string | null;
-  preferred_currency: string | null;
-  street: string | null;
-  city: string | null;
-  state: string | null;
-  zip: string | null;
-  country: string | null;
-}
-
 export default function AccountPage() {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);

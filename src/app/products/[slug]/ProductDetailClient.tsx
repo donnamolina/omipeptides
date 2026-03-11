@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, ChevronDown, ShoppingBag, Shield, FlaskConical, Check, FileText, ExternalLink } from "lucide-react";
+import { ChevronRight, ChevronDown, ShoppingBag, Shield, FlaskConical, Check, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion, AnimatePresence } from "framer-motion";

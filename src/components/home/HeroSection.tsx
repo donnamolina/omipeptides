@@ -6,10 +6,10 @@ import Link from "next/link";
 import { ShieldCheck, FlaskConical, Gift, QrCode } from "lucide-react";
 
 const rotatingWords = [
-  { text: "UPGRADE", color: "#C5F536" },
-  { text: "RECOVERY", color: "#8B5CF6" },
-  { text: "EVOLUTION", color: "#FF5C39" },
-  { text: "ADVANTAGE", color: "#06B6D4" },
+  { text: "UPGRADE", color: "#FF5C39" },
+  { text: "RECOVERY", color: "#A0522D" },
+  { text: "EVOLUTION", color: "#D4913A" },
+  { text: "ADVANTAGE", color: "#C75B7A" },
 ];
 
 const headlineWords = ["YOUR", "BODY'S", "NEXT"];

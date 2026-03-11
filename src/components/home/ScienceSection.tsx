@@ -77,7 +77,7 @@ export default function ScienceSection() {
             }}
             animate={{
               y: [0, -12, 0, 10, 0],
-              opacity: [0.05, 0.15, 0.05],
+              opacity: [0.03, 0.05, 0.03],
             }}
             transition={{
               duration: 6 + (i * 17) % 8,

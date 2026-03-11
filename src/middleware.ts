@@ -47,18 +47,7 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse;
   }
 
-  // Protect checkout — redirect to login if not authenticated
-  if (
-    !user &&
-    request.nextUrl.pathname.startsWith("/checkout")
-  ) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
-    url.searchParams.set("redirect", request.nextUrl.pathname);
-    return NextResponse.redirect(url);
-  }
-
-  // Protect account pages
+  // Protect account pages (checkout is open for guest checkout)
   if (
     !user &&
     request.nextUrl.pathname.startsWith("/account")

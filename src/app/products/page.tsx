@@ -331,11 +331,6 @@ function ProductCatalogContent() {
   const [catalogCategories, setCatalogCategories] = useState<CatalogCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     setActiveCategory(categoryParam);

@@ -28,7 +28,7 @@ interface Order {
 function getStatusStyle(status: string): { bg: string; text: string } {
   switch (status.toLowerCase()) {
     case "pending":
-      return { bg: "rgba(234,179,8,0.1)", text: "#EAB308" };
+      return { bg: "rgba(245,158,11,0.1)", text: "#F59E0B" };
     case "confirmed":
     case "processing":
       return { bg: "rgba(78,205,196,0.1)", text: "#4ECDC4" };
@@ -39,7 +39,7 @@ function getStatusStyle(status: string): { bg: string; text: string } {
     case "refunded":
       return { bg: "rgba(239,68,68,0.1)", text: "#EF4444" };
     default:
-      return { bg: "rgba(156,163,175,0.1)", text: "#9CA3AF" };
+      return { bg: "rgba(155,145,137,0.1)", text: "#9B9189" };
   }
 }
 

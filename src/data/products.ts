@@ -34,7 +34,7 @@ export const products: Product[] = [
     },
     inStock: true,
     stockLevel: "high",
-    tags: ["bestseller", "gut-health", "injury-recovery"],
+    tags: ["best-seller", "gut-health", "injury-recovery"],
     purity: "99.7%",
     thirdPartyTested: true,
     studiesCount: 108,
@@ -73,7 +73,7 @@ export const products: Product[] = [
     },
     inStock: true,
     stockLevel: "high",
-    tags: ["inflammation", "mobility", "tissue-repair"],
+    tags: ["best-seller", "inflammation", "mobility", "tissue-repair"],
     purity: "99.7%",
     thirdPartyTested: true,
     studiesCount: 67,
@@ -154,7 +154,7 @@ export const products: Product[] = [
     },
     inStock: true,
     stockLevel: "high",
-    tags: ["bestseller", "skin", "collagen", "anti-aging"],
+    tags: ["best-seller", "skin", "collagen", "anti-aging"],
     purity: "99.7%",
     thirdPartyTested: true,
     studiesCount: 134,
@@ -274,7 +274,7 @@ export const products: Product[] = [
     },
     inStock: true,
     stockLevel: "high",
-    tags: ["bestseller", "growth-hormone", "muscle", "fat-loss"],
+    tags: ["best-seller", "growth-hormone", "muscle", "fat-loss"],
     purity: "99.7%",
     thirdPartyTested: true,
     studiesCount: 76,
@@ -313,7 +313,7 @@ export const products: Product[] = [
     },
     inStock: true,
     stockLevel: "high",
-    tags: ["growth-hormone", "sleep", "body-composition"],
+    tags: ["best-seller", "growth-hormone", "sleep", "body-composition"],
     purity: "99.7%",
     thirdPartyTested: true,
     studiesCount: 58,
@@ -352,7 +352,7 @@ export const products: Product[] = [
     },
     inStock: true,
     stockLevel: "high",
-    tags: ["fat-loss", "clinical-grade", "visceral-fat"],
+    tags: ["best-seller", "fat-loss", "clinical-grade", "visceral-fat"],
     purity: "99.7%",
     thirdPartyTested: true,
     studiesCount: 94,
@@ -490,5 +490,5 @@ export function getProductsByCategory(category: string): Product[] {
 }
 
 export function getFeaturedProducts(): Product[] {
-  return products.filter((p) => p.tags.includes("bestseller"));
+  return products.filter((p) => p.tags.includes("best-seller"));
 }
