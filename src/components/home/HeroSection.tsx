@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ShieldCheck, FlaskConical, Gift, QrCode } from "lucide-react";
+import { ShieldCheck, FlaskConical, Gift, QrCode, Users } from "lucide-react";
 
 const rotatingWords = [
   { text: "UPGRADE", color: "#FF5C39" },
@@ -40,14 +40,11 @@ export default function HeroSection() {
 
   const currentWord = rotatingWords[wordIndex];
 
-  // Headline animation completes at: last word index (2) * 200ms stagger + 500ms duration = ~900ms
-  // Subheadline delay: 800ms after headline starts
   const subheadlineDelay = 0.8;
-  // CTAs delay: 1000ms after headline starts
   const ctaDelay = 1.0;
 
   return (
-    <section className="relative flex min-h-[calc(100vh-80px)] items-center justify-center overflow-x-clip bg-warm-cream px-4 sm:px-6 lg:px-8 pt-20 pb-12 -mt-8">
+    <section className="relative flex min-h-[calc(100vh-200px)] items-center justify-center overflow-x-clip bg-warm-cream px-4 sm:px-6 lg:px-8 pt-20 pb-12 -mt-8">
       {/* Animated gradient mesh background */}
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -84,7 +81,54 @@ export default function HeroSection() {
         />
       </div>
 
+      {/* Molecular chain illustration — desktop only */}
+      <svg
+        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block"
+        width="320"
+        height="500"
+        viewBox="0 0 320 500"
+        fill="none"
+        aria-hidden="true"
+      >
+        {/* Bonds */}
+        <line x1="180" y1="80" x2="240" y2="150" stroke="#FF5C39" strokeWidth="2" opacity="0.1" />
+        <line x1="240" y1="150" x2="200" y2="240" stroke="#2EC4A0" strokeWidth="2" opacity="0.1" />
+        <line x1="200" y1="240" x2="260" y2="310" stroke="#FF5C39" strokeWidth="2" opacity="0.12" />
+        <line x1="260" y1="310" x2="220" y2="390" stroke="#2EC4A0" strokeWidth="2" opacity="0.1" />
+        <line x1="220" y1="390" x2="270" y2="450" stroke="#FF5C39" strokeWidth="2" opacity="0.08" />
+        {/* Side branches */}
+        <line x1="240" y1="150" x2="300" y2="130" stroke="#2EC4A0" strokeWidth="1.5" opacity="0.08" />
+        <line x1="200" y1="240" x2="140" y2="220" stroke="#FF5C39" strokeWidth="1.5" opacity="0.08" />
+        <line x1="260" y1="310" x2="310" y2="280" stroke="#2EC4A0" strokeWidth="1.5" opacity="0.08" />
+        <line x1="220" y1="390" x2="160" y2="400" stroke="#FF5C39" strokeWidth="1.5" opacity="0.08" />
+        {/* Atoms */}
+        <circle cx="180" cy="80" r="12" fill="#FF5C39" opacity="0.1" />
+        <circle cx="240" cy="150" r="16" fill="#2EC4A0" opacity="0.12" />
+        <circle cx="200" cy="240" r="14" fill="#FF5C39" opacity="0.1" />
+        <circle cx="260" cy="310" r="18" fill="#2EC4A0" opacity="0.12" />
+        <circle cx="220" cy="390" r="14" fill="#FF5C39" opacity="0.1" />
+        <circle cx="270" cy="450" r="10" fill="#2EC4A0" opacity="0.08" />
+        {/* Branch endpoints */}
+        <circle cx="300" cy="130" r="8" fill="#2EC4A0" opacity="0.08" />
+        <circle cx="140" cy="220" r="8" fill="#FF5C39" opacity="0.08" />
+        <circle cx="310" cy="280" r="10" fill="#2EC4A0" opacity="0.08" />
+        <circle cx="160" cy="400" r="8" fill="#FF5C39" opacity="0.08" />
+      </svg>
+
       <div className="relative z-10 mx-auto max-w-5xl text-center">
+        {/* Social proof */}
+        <motion.div
+          className="mb-6 flex items-center justify-center gap-2 text-sm font-medium text-neutral-600"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Users className="h-4 w-4 text-coral-punch" />
+          <span>
+            Trusted by <span className="font-mono font-semibold text-midnight-ink">2,500+</span> researchers worldwide
+          </span>
+        </motion.div>
+
         {/* Headline with word-by-word staggered pull-up reveal */}
         <div>
           <div className="font-heading text-[clamp(2.5rem,8vw,8rem)] font-extrabold leading-[0.9] tracking-tight text-midnight-ink">
@@ -122,38 +166,40 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Subheadline - fades in after headline animation completes */}
+        {/* Subheadline */}
         <motion.p
           className="mx-auto mt-8 max-w-xl text-lg text-neutral-600 md:text-xl"
           initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.6, delay: subheadlineDelay }}
         >
-          Premium research-grade peptides for scientific investigation.
+          Research-grade peptides. 99.7% purity. Janoshik verified. Shipped worldwide.
         </motion.p>
 
-        {/* CTAs - slide up with stagger after subheadline */}
+        {/* CTAs */}
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <motion.div
+            className="w-full sm:w-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: ctaDelay }}
           >
             <Link
               href="/products"
-              className="inline-flex h-13 items-center justify-center rounded-[var(--radius-md)] bg-coral-punch px-8 text-sm font-semibold text-white shadow-[var(--shadow-md)] transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-lg)] active:scale-[0.98]"
+              className="inline-flex h-14 w-full min-w-[200px] items-center justify-center rounded-[var(--radius-md)] bg-coral-punch px-10 text-sm font-semibold text-white shadow-[var(--shadow-md)] transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-lg)] active:scale-[0.98] sm:w-auto"
             >
               Shop Peptides
             </Link>
           </motion.div>
           <motion.div
+            className="w-full sm:w-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: ctaDelay + 0.15 }}
           >
             <Link
               href="/blog"
-              className="inline-flex h-13 items-center justify-center rounded-[var(--radius-md)] border-2 border-coral-punch px-8 text-sm font-semibold text-coral-punch transition-all hover:bg-coral-punch hover:text-white active:scale-[0.98]"
+              className="inline-flex h-12 w-full items-center justify-center rounded-[var(--radius-md)] border-2 border-coral-punch/60 px-8 text-sm font-semibold text-coral-punch transition-all hover:bg-coral-punch hover:text-white active:scale-[0.98] sm:w-auto"
             >
               Learn the Science
             </Link>
