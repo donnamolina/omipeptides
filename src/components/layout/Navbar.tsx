@@ -267,7 +267,7 @@ export default function Navbar() {
                 className="flex md:hidden h-10 rounded-[var(--radius-md)] border border-neutral-200 bg-transparent px-2 text-xs font-semibold text-neutral-600 outline-none"
                 aria-label="Select currency"
               >
-                <option value="USD">$</option>
+                <option value="USD">US$</option>
                 <option value="DOP">RD$</option>
               </select>
               <button
@@ -276,7 +276,7 @@ export default function Navbar() {
                 title={`Switch to ${currency === "USD" ? "Dominican Pesos" : "US Dollar"}`}
                 aria-label={`Currency: ${currency}. Switch to ${currency === "USD" ? "Dominican Pesos" : "US Dollar"}`}
               >
-                <span className={cn("transition-opacity", currency === "USD" ? "opacity-100" : "opacity-40")}>$</span>
+                <span className={cn("transition-opacity", currency === "USD" ? "opacity-100" : "opacity-40")}>US$</span>
                 <span className="text-neutral-300">/</span>
                 <span className={cn("transition-opacity", currency === "DOP" ? "opacity-100" : "opacity-40")}>RD$</span>
               </button>
