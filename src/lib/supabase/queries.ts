@@ -129,7 +129,7 @@ export async function getFeaturedProducts(): Promise<Product[]> {
   const { data, error } = await supabase
     .from("products")
     .select("*")
-    .contains("tags", ["bestseller"])
+    .contains("tags", ["best-seller"])
     .limit(4);
 
   if (error) throw error;
