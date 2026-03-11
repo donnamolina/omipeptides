@@ -131,15 +131,14 @@ export default function Navbar() {
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-8">
               <NavLink href="/">Home</NavLink>
-              <NavLink href="/products">Shop</NavLink>
 
-              {/* Categories Dropdown */}
+              {/* Shop Dropdown */}
               <div ref={catRef} className="relative">
                 <button
                   onClick={() => setCatOpen(!catOpen)}
                   className="flex items-center gap-1 text-sm font-medium text-neutral-600 transition-opacity hover:opacity-70"
                 >
-                  Categories
+                  Shop
                   <ChevronDown
                     className={cn(
                       "h-3.5 w-3.5 transition-transform duration-300",
@@ -154,8 +153,16 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 rounded-[var(--radius-md)] border border-neutral-200 bg-white/95 backdrop-blur-lg p-2 shadow-[var(--shadow-lg)]"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-60 rounded-[var(--radius-lg)] border border-neutral-200 bg-white p-2 shadow-[var(--shadow-lg)]"
                     >
+                      <Link
+                        href="/products"
+                        onClick={() => setCatOpen(false)}
+                        className="block rounded-[var(--radius-sm)] px-3 py-2 text-sm font-semibold text-midnight-ink transition-opacity hover:opacity-70"
+                      >
+                        All Products
+                      </Link>
+                      <div className="my-1 h-px bg-neutral-200" />
                       {categories.map((cat) => (
                         <Link
                           key={cat.href}
@@ -353,17 +360,13 @@ export default function Navbar() {
                 <MobileNavLink href="/" onClick={() => setMobileOpen(false)}>
                   Home
                 </MobileNavLink>
-                <MobileNavLink href="/products" onClick={() => setMobileOpen(false)}>
-                  Shop
-                </MobileNavLink>
-
-                {/* Mobile Categories Accordion */}
+                {/* Mobile Shop Accordion */}
                 <div>
                   <button
                     onClick={() => setMobileCatOpen(!mobileCatOpen)}
                     className="flex w-full items-center justify-between font-heading text-2xl font-bold text-midnight-ink transition-opacity hover:opacity-70"
                   >
-                    Categories
+                    Shop
                     <ChevronDown
                       className={cn(
                         "h-5 w-5 transition-transform duration-300",
@@ -381,6 +384,13 @@ export default function Navbar() {
                         className="overflow-hidden"
                       >
                         <div className="mt-3 flex flex-col gap-3 pl-4 border-l-2 border-coral-punch/20">
+                          <Link
+                            href="/products"
+                            onClick={() => setMobileOpen(false)}
+                            className="text-base font-semibold text-midnight-ink transition-opacity hover:opacity-70"
+                          >
+                            All Products
+                          </Link>
                           {categories.map((cat) => (
                             <Link
                               key={cat.href}
