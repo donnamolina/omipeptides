@@ -3,32 +3,12 @@
 import { useState, useMemo, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-import { Search, FileCheck, Mail, X, Check } from "lucide-react";
+import { Search, FileCheck, Mail, X, Check, FlaskConical } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { createClient } from "@/lib/supabase/client";
 import { useCartStore, formatPrice } from "@/store/cart";
 import { Product, ProductVariant, ProductCategory, CatalogCategory } from "@/types";
-
-/* ------------------------------------------------------------------ */
-/*  Image mapping: category slug → image file prefix                  */
-/* ------------------------------------------------------------------ */
-const CATEGORY_IMAGE_MAP: Record<string, string> = {
-  "recovery-healing": "recovery",
-  "growth-hormone-anti-aging": "anti-aging",
-  "longevity-brain": "anti-aging",
-  "glp1-weight-loss": "weight-management",
-  "skin-beauty": "anti-aging",
-  "metabolic-other": "performance",
-  "blends-stacks": "recovery",
-  "accessories-supplies": "performance",
-};
-
-function categoryImage(category: string): string {
-  const prefix = CATEGORY_IMAGE_MAP[category] ?? category.split("-")[0];
-  return `/images/products/${prefix}-category.png`;
-}
 
 /* ------------------------------------------------------------------ */
 /*  Supabase row → app type mappers                                   */
@@ -258,13 +238,9 @@ function ProductCard({ product }: { product: Product }) {
               </span>
             </div>
           )}
-          <Image
-            src={categoryImage(product.category)}
-            alt={product.name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
+          <div className="flex h-full w-full items-center justify-center bg-neutral-100">
+            <FlaskConical className="h-12 w-12 text-stone" />
+          </div>
         </Link>
 
         {/* Body */}

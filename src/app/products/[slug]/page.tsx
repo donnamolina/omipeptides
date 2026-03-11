@@ -53,7 +53,7 @@ export default async function ProductDetailPage({
         "@type": "Product",
         name: product.name,
         description: product.description,
-        image: `https://omipeptides.com/images/products/${product.category}-category.png`,
+        image: `https://omipeptides.com/images/og-default.png`,
         offers: {
           "@type": "Offer",
           price: product.price,
