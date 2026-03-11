@@ -149,36 +149,12 @@ export default function ScienceSection() {
         <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-3 lg:mt-24">
           {stats.map((stat, i) => (
             <ScrollReveal key={stat.label} delay={i * 0.15}>
-              <div className="group text-center">
-                {/* Glow container */}
-                <div
-                  className="relative inline-flex items-center justify-center rounded-2xl px-6 py-4"
-                  style={{
-                    boxShadow: "0 0 60px rgba(197,245,54,0.15), 0 0 120px rgba(197,245,54,0.06)",
-                  }}
-                >
-                  {/* Subtle ring pulse behind number */}
-                  <motion.div
-                    className="pointer-events-none absolute inset-0 rounded-2xl"
-                    style={{
-                      border: "1px solid rgba(197,245,54,0.08)",
-                    }}
-                    animate={{ opacity: [0.4, 0.8, 0.4] }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: i * 0.8,
-                    }}
-                  />
-
-                  <SpringCounter
-                    target={stat.value}
-                    suffix={stat.suffix}
-                    decimals={stat.decimals}
-                  />
-                </div>
-
+              <div className="text-center">
+                <SpringCounter
+                  target={stat.value}
+                  suffix={stat.suffix}
+                  decimals={stat.decimals}
+                />
                 <p className="mt-4 text-sm text-neutral-400">{stat.label}</p>
               </div>
             </ScrollReveal>
