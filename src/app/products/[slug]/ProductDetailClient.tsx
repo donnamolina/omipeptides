@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, ChevronDown, ShoppingBag, Shield, FlaskConical, Check, AlertTriangle, FileText, ExternalLink } from "lucide-react";
+import { ChevronRight, ChevronDown, ShoppingBag, Shield, FlaskConical, Check, FileText, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion, AnimatePresence } from "framer-motion";
@@ -193,11 +193,6 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
       id: "benefits",
       title: "Key Benefits",
       content: product.benefits.join("\n"),
-    },
-    {
-      id: "dosage",
-      title: "Reconstitution & Storage",
-      content: `${product.dosage.amount} · ${product.dosage.frequency}\n\nTiming: ${product.dosage.timing}\n\n${product.dosage.instructions}`,
     },
   ];
 
@@ -423,56 +418,10 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           </div>
         </section>
 
-        {/* Reconstitution & Storage Card */}
-        <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
-          <ScrollReveal>
-            <div className="rounded-[var(--radius-lg)] bg-midnight-ink p-8">
-              <h3 className="font-heading text-lg font-bold text-white">
-                Reconstitution & Storage
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-300">
-                {product.dosage.instructions}
-              </p>
-              <div className="mt-4 grid grid-cols-3 gap-4">
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-neutral-400">Form</p>
-                  <p className="mt-1 font-mono text-lg font-medium text-white">
-                    {product.dosage.amount}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-neutral-400">Storage</p>
-                  <p className="mt-1 font-mono text-lg font-medium text-white">
-                    {product.dosage.timing}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-neutral-400">Purity</p>
-                  <p className="mt-1 font-mono text-lg font-medium text-coral-punch">
-                    {product.purity}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
-        </section>
-
         {/* Research Protocols */}
         {protocols.length > 0 && (
           <ResearchProtocols protocols={protocols} productName={product.name} />
         )}
-
-        {/* Research Disclaimer */}
-        <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-8">
-          <div className="rounded-[var(--radius-lg)] border border-stone bg-soft-sand p-4">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
-              <p className="text-xs leading-relaxed text-neutral-600">
-                <span className="font-semibold text-midnight-ink">Research Use Only</span> — This product is intended for laboratory and research purposes only. Not for human consumption. Not FDA approved. No therapeutic claims are made. By purchasing, you confirm this product is for legitimate research purposes.
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* Certificate of Analysis */}
         {product.category !== "accessories-supplies" && (
