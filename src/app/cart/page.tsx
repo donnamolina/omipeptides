@@ -2,20 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Trash2, ArrowLeft, ShoppingBag, Check } from "lucide-react";
+import { Trash2, ArrowLeft, ShoppingBag, Check, FlaskConical } from "lucide-react";
 import { motion } from "framer-motion";
-
-const categoryProductImages: Record<string, string> = {
-  "recovery-healing": "/images/products/recovery-category.png",
-  "longevity-brain": "/images/products/anti-aging-category.png",
-  "growth-hormone-anti-aging": "/images/products/performance-category.png",
-  "glp1-weight-loss": "/images/products/weight-management-category.png",
-  "skin-beauty": "/images/products/anti-aging-category.png",
-  "metabolic-other": "/images/products/weight-management-category.png",
-  "blends-stacks": "/images/products/performance-category.png",
-  "accessories-supplies": "/images/products/recovery-category.png",
-};
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useCartStore, formatPrice, getItemPrice } from "@/store/cart";
@@ -68,13 +56,8 @@ export default function CartPage() {
                     exit={{ opacity: 0, y: -10 }}
                     className="flex gap-4 rounded-[var(--radius-lg)] border border-neutral-200 bg-surface-white p-4"
                   >
-                    <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-[var(--radius-md)] bg-white">
-                      <Image
-                        src={categoryProductImages[item.product.category]}
-                        alt={`${item.product.name} peptide product`}
-                        fill
-                        className="object-contain p-2"
-                      />
+                    <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-md)] bg-neutral-100">
+                      <FlaskConical className="h-10 w-10 text-stone" />
                     </div>
 
                     {/* Details */}

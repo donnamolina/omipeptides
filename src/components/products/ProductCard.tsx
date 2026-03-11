@@ -1,22 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, FlaskConical } from "lucide-react";
 import { Product } from "@/types";
 import { useCartStore, formatPrice } from "@/store/cart";
 import { motion } from "framer-motion";
 import { useState } from "react";
-
-const categoryProductImages: Record<string, string> = {
-  "recovery-healing": "/images/products/recovery-category.png",
-  "longevity-brain": "/images/products/anti-aging-category.png",
-  "growth-hormone-anti-aging": "/images/products/performance-category.png",
-  "glp1-weight-loss": "/images/products/weight-management-category.png",
-  "skin-beauty": "/images/products/anti-aging-category.png",
-  "metabolic-other": "/images/products/weight-management-category.png",
-  "blends-stacks": "/images/products/performance-category.png",
-  "accessories-supplies": "/images/products/recovery-category.png",
-};
 
 const categoryColors: Record<string, string> = {
   "recovery-healing": "#4ECDC4",
@@ -44,16 +33,30 @@ interface ProductCardProps {
   product: Product;
 }
 
+const stockConfig = {
+  high: { color: "#22C55E", label: "In Stock" },
+  low: { color: "#F59E0B", label: "Low Stock — Order Soon" },
+  out: { color: "#EF4444", label: "Out of Stock" },
+} as const;
+
+function getStockLevel(product: Product): "high" | "low" | "out" {
+  if (!product.inStock) return "out";
+  return product.stockLevel ?? "high";
+}
+
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const currency = useCartStore((s) => s.currency);
   const [added, setAdded] = useState(false);
 
   const categoryColor = categoryColors[product.category] ?? "#FF5C39";
+  const stock = getStockLevel(product);
+  const isOutOfStock = stock === "out";
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isOutOfStock) return;
     addItem(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
@@ -77,6 +80,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           }}
         />
 
+        {/* Best Seller badge */}
+        {product.tags.includes("best-seller") && (
+          <span className="absolute left-3 top-3 z-10 rounded-full bg-coral-punch px-3 py-1 font-heading text-xs font-bold uppercase tracking-wide text-white">
+            Best Seller
+          </span>
+        )}
+
         {/* Category badge */}
         <span
           className="inline-flex w-fit items-center rounded-[var(--radius-full)] px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white"
@@ -85,14 +95,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           {categoryLabels[product.category]}
         </span>
 
-        {/* Product image */}
-        <div className="mt-4 flex h-[220px] w-full items-center justify-center rounded-xl bg-white transition-transform duration-300 group-hover:scale-105">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={categoryProductImages[product.category]}
-            alt={product.name}
-            className="h-[160px] w-auto object-contain"
-          />
+        {/* Product image placeholder */}
+        <div className={`mt-4 flex h-[220px] w-full flex-col items-center justify-center rounded-xl bg-neutral-100 transition-transform duration-300 group-hover:scale-105${isOutOfStock ? " opacity-60" : ""}`}>
+          <FlaskConical className="h-12 w-12 text-stone" />
         </div>
 
         {/* Product info */}
@@ -121,8 +126,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Add to Cart button: hidden by default, slides up on card hover */}
           <motion.button
             onClick={handleAddToCart}
-            whileTap={{ scale: 0.9 }}
-            className="relative z-10 flex h-10 w-10 translate-y-4 items-center justify-center rounded-[var(--radius-md)] border border-coral-punch text-coral-punch opacity-0 transition-all duration-300 hover:bg-coral-punch hover:text-white group-hover:translate-y-0 group-hover:opacity-100"
+            whileTap={isOutOfStock ? undefined : { scale: 0.9 }}
+            disabled={isOutOfStock}
+            className={`relative z-10 flex h-10 w-10 translate-y-4 items-center justify-center rounded-[var(--radius-md)] border transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 ${
+              isOutOfStock
+                ? "border-neutral-300 text-neutral-300 cursor-not-allowed opacity-0"
+                : "border-coral-punch text-coral-punch opacity-0 hover:bg-coral-punch hover:text-white"
+            }`}
           >
             {added ? (
               <motion.span
@@ -136,6 +146,17 @@ export default function ProductCard({ product }: ProductCardProps) {
               <ShoppingBag className="h-4 w-4" />
             )}
           </motion.button>
+        </div>
+
+        {/* Stock status */}
+        <div className="mt-2 flex items-center gap-1.5">
+          <span
+            className="inline-block h-2 w-2 rounded-full"
+            style={{ backgroundColor: stockConfig[stock].color }}
+          />
+          <span className="text-xs" style={{ color: stockConfig[stock].color }}>
+            {stockConfig[stock].label}
+          </span>
         </div>
 
         {/* Purity badge */}

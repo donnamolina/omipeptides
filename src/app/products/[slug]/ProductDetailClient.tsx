@@ -1,25 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronRight, ChevronDown, ShoppingBag, Shield, FlaskConical, Check, AlertTriangle, FileText } from "lucide-react";
-
-const categoryProductImages: Record<string, string> = {
-  "recovery-healing": "/images/products/recovery-category.png",
-  "longevity-brain": "/images/products/anti-aging-category.png",
-  "growth-hormone-anti-aging": "/images/products/performance-category.png",
-  "glp1-weight-loss": "/images/products/weight-management-category.png",
-  "skin-beauty": "/images/products/anti-aging-category.png",
-  "metabolic-other": "/images/products/weight-management-category.png",
-  "blends-stacks": "/images/products/performance-category.png",
-  "accessories-supplies": "/images/products/recovery-category.png",
-};
 import { useState, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProductCard from "@/components/products/ProductCard";
 import ScrollReveal from "@/components/shared/ScrollReveal";
+import StickyMobileATC from "@/components/products/StickyMobileATC";
 import { useCartStore, formatPrice } from "@/store/cart";
 import { createClient } from "@/lib/supabase/client";
 import { Product, ProductCategory, ProductVariant } from "@/types";
@@ -76,6 +66,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
   const [added, setAdded] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>("how-it-works");
   const [imageHovered, setImageHovered] = useState(false);
+  const { ref: atcRef, inView: atcInView } = useInView({ threshold: 0 });
 
   useEffect(() => {
     async function fetchProduct() {
@@ -216,14 +207,10 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 <motion.div
                   animate={{ scale: imageHovered ? 1.08 : 1 }}
                   transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="relative h-full w-full"
+                  className="flex h-full w-full flex-col items-center justify-center bg-neutral-100"
                 >
-                  <Image
-                    src={categoryProductImages[product.category]}
-                    alt={product.name}
-                    fill
-                    className="object-contain p-8"
-                  />
+                  <FlaskConical className="h-16 w-16 text-stone" />
+                  <p className="mt-3 text-xs text-warm-gray">Product image coming soon</p>
                 </motion.div>
               </div>
             </ScrollReveal>
@@ -297,7 +284,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 )}
 
                 {/* Quantity + ATC */}
-                <div className="mt-6 flex items-center gap-4">
+                <div ref={atcRef} className="mt-6 flex items-center gap-4">
                   <div className="flex items-center rounded-[var(--radius-md)] border border-neutral-200">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -507,6 +494,14 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           </section>
         )}
       </main>
+      <StickyMobileATC
+        productName={product.name}
+        sizeLabel={selectedVariant?.sizeLabel}
+        price={displayPrice}
+        currency={currency}
+        onAddToCart={handleAddToCart}
+        visible={!atcInView}
+      />
       <Footer />
     </>
   );
