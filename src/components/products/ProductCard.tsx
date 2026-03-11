@@ -31,6 +31,7 @@ const categoryLabels: Record<string, string> = {
 
 interface ProductCardProps {
   product: Product;
+  hideBestSellerBadge?: boolean;
 }
 
 const stockConfig = {
@@ -44,7 +45,7 @@ function getStockLevel(product: Product): "high" | "low" | "out" {
   return product.stockLevel ?? "high";
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, hideBestSellerBadge }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const currency = useCartStore((s) => s.currency);
   const [added, setAdded] = useState(false);
@@ -81,7 +82,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
 
         {/* Best Seller badge */}
-        {product.tags.includes("best-seller") && (
+        {!hideBestSellerBadge && product.tags.includes("best-seller") && (
           <span className="absolute left-3 top-3 z-10 rounded-full bg-coral-punch px-3 py-1 font-heading text-xs font-bold uppercase tracking-wide text-white">
             Best Seller
           </span>

@@ -22,7 +22,7 @@ export default function FeaturedProducts({ products }: { products: Product[] }) 
         <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((product, i) => (
             <ScrollReveal key={product.id} delay={i * 0.1} className="h-full">
-              <ProductCard product={product} />
+              <ProductCard product={product} hideBestSellerBadge />
             </ScrollReveal>
           ))}
         </div>

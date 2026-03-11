@@ -130,7 +130,7 @@ export async function getFeaturedProducts(): Promise<Product[]> {
     .from("products")
     .select("*")
     .contains("tags", ["best-seller"])
-    .limit(4);
+    .limit(6);
 
   if (error) throw error;
   return (data ?? []).map(mapProduct);
