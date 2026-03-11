@@ -10,6 +10,7 @@ import Footer from "@/components/layout/Footer";
 import ProductCard from "@/components/products/ProductCard";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import StickyMobileATC from "@/components/products/StickyMobileATC";
+import ResearchProtocols, { Protocol } from "@/components/products/ResearchProtocols";
 import { useCartStore, formatPrice } from "@/store/cart";
 import { createClient } from "@/lib/supabase/client";
 import { Product, ProductCategory, ProductVariant } from "@/types";
@@ -59,6 +60,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [variants, setVariants] = useState<ProductVariant[]>([]);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+  const [protocols, setProtocols] = useState<Protocol[]>([]);
   const [loading, setLoading] = useState(true);
   const addItem = useCartStore((s) => s.addItem);
   const currency = useCartStore((s) => s.currency);
@@ -103,6 +105,26 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
         }
 
         setProduct(p);
+
+        // Fetch research protocols
+        const { data: protoData } = await supabase
+          .from("research_protocols")
+          .select("*")
+          .eq("product_id", data.id)
+          .order("display_order");
+        if (protoData && protoData.length > 0) {
+          setProtocols(
+            protoData.map((r: Record<string, unknown>) => ({
+              id: r.id as string,
+              protocolType: r.protocol_type as Protocol["protocolType"],
+              title: r.title as string,
+              dose: r.dose as string,
+              frequency: r.frequency as string,
+              duration: r.duration as string,
+              description: r.description as string,
+            }))
+          );
+        }
 
         // Fetch related products
         if (p.relatedSlugs && p.relatedSlugs.length > 0) {
@@ -174,7 +196,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
     },
     {
       id: "dosage",
-      title: "Dosage & Protocol",
+      title: "Reconstitution & Storage",
       content: `${product.dosage.amount} · ${product.dosage.frequency}\n\nTiming: ${product.dosage.timing}\n\n${product.dosage.instructions}`,
     },
   ];
@@ -401,35 +423,32 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
           </div>
         </section>
 
-        {/* Dosage Card */}
+        {/* Reconstitution & Storage Card */}
         <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
           <ScrollReveal>
             <div className="rounded-[var(--radius-lg)] bg-midnight-ink p-8">
               <h3 className="font-heading text-lg font-bold text-white">
-                Dosage Protocol
+                Reconstitution & Storage
               </h3>
-              <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+              <p className="mt-3 text-sm leading-relaxed text-neutral-300">
+                {product.dosage.instructions}
+              </p>
+              <div className="mt-4 grid grid-cols-3 gap-4">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-neutral-400">Amount</p>
-                  <p className="mt-1 font-mono text-lg font-medium text-electric-lime">
+                  <p className="text-xs uppercase tracking-wider text-neutral-400">Form</p>
+                  <p className="mt-1 font-mono text-lg font-medium text-white">
                     {product.dosage.amount}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-neutral-400">Frequency</p>
-                  <p className="mt-1 font-mono text-lg font-medium text-white">
-                    {product.dosage.frequency}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-neutral-400">Timing</p>
+                  <p className="text-xs uppercase tracking-wider text-neutral-400">Storage</p>
                   <p className="mt-1 font-mono text-lg font-medium text-white">
                     {product.dosage.timing}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-wider text-neutral-400">Purity</p>
-                  <p className="mt-1 font-mono text-lg font-medium text-electric-lime">
+                  <p className="mt-1 font-mono text-lg font-medium text-coral-punch">
                     {product.purity}
                   </p>
                 </div>
@@ -437,6 +456,11 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             </div>
           </ScrollReveal>
         </section>
+
+        {/* Research Protocols */}
+        {protocols.length > 0 && (
+          <ResearchProtocols protocols={protocols} productName={product.name} />
+        )}
 
         {/* Research Disclaimer */}
         <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-8">
