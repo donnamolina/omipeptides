@@ -119,17 +119,17 @@ export default function Navbar() {
         )}
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex h-20 items-center justify-between">
+          <div className="flex h-20 items-center">
             {/* Logo */}
-            <Link href="/" className="group flex items-center gap-2">
+            <Link href="/" className="shrink-0 group flex items-center gap-2">
               <span className="font-heading text-2xl font-extrabold tracking-tight text-midnight-ink">
                 OMI
                 <span className="text-coral-punch">PEPTIDES</span>
               </span>
             </Link>
 
-            {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-8">
+            {/* Desktop Nav — centered */}
+            <div className="hidden md:flex flex-1 items-center justify-center gap-8">
               <NavLink href="/">Home</NavLink>
 
               {/* Shop Dropdown */}
@@ -183,7 +183,7 @@ export default function Navbar() {
             </div>
 
             {/* Right Side */}
-            <div className="ml-auto flex items-center gap-3">
+            <div className="ml-auto md:ml-0 shrink-0 flex items-center gap-3">
               {/* Shop Now CTA */}
               <Link
                 href="/products"
