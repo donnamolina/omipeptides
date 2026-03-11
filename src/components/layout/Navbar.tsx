@@ -121,7 +121,7 @@ export default function Navbar() {
           <div className="flex h-20 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="group flex items-center gap-2">
-              <span className="font-heading text-2xl font-extrabold tracking-tight text-midnight-ink transition-transform duration-300 group-hover:scale-[1.02]">
+              <span className="font-heading text-2xl font-extrabold tracking-tight text-midnight-ink">
                 OMI
                 <span className="text-coral-punch">PEPTIDES</span>
               </span>
@@ -136,7 +136,7 @@ export default function Navbar() {
               <div ref={catRef} className="relative">
                 <button
                   onClick={() => setCatOpen(!catOpen)}
-                  className="flex items-center gap-1 text-sm font-medium text-neutral-600 transition-colors hover:text-midnight-ink"
+                  className="flex items-center gap-1 text-sm font-medium text-neutral-600 transition-opacity hover:opacity-70"
                 >
                   Categories
                   <ChevronDown
@@ -160,7 +160,7 @@ export default function Navbar() {
                           key={cat.href}
                           href={cat.href}
                           onClick={() => setCatOpen(false)}
-                          className="block rounded-[var(--radius-sm)] px-3 py-2 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                          className="block rounded-[var(--radius-sm)] px-3 py-2 text-sm text-neutral-600 transition-opacity hover:opacity-70"
                         >
                           {cat.label}
                         </Link>
@@ -179,7 +179,7 @@ export default function Navbar() {
               {/* Shop Now CTA */}
               <Link
                 href="/products"
-                className="hidden md:inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-coral-punch px-5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-[var(--shadow-coral)] hover:scale-[1.02] active:scale-[0.97]"
+                className="hidden md:inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-coral-punch px-5 text-sm font-semibold text-white transition-opacity hover:opacity-80 active:opacity-70"
               >
                 Shop Now
               </Link>
@@ -191,7 +191,7 @@ export default function Navbar() {
                     <div ref={userMenuRef} className="relative hidden md:block">
                       <button
                         onClick={() => setUserMenuOpen(!userMenuOpen)}
-                        className="flex h-10 items-center gap-2 rounded-[var(--radius-md)] border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-midnight-ink"
+                        className="flex h-10 items-center gap-2 rounded-[var(--radius-md)] border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition-opacity hover:opacity-70"
                       >
                         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-coral-punch text-[11px] font-semibold text-white">
                           {userInitial}
@@ -216,7 +216,7 @@ export default function Navbar() {
                             <Link
                               href="/account"
                               onClick={() => setUserMenuOpen(false)}
-                              className="flex items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                              className="flex items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-opacity hover:opacity-70"
                             >
                               <User className="h-4 w-4" />
                               My Account
@@ -224,7 +224,7 @@ export default function Navbar() {
                             <Link
                               href="/account/orders"
                               onClick={() => setUserMenuOpen(false)}
-                              className="flex items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                              className="flex items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-opacity hover:opacity-70"
                             >
                               <Package className="h-4 w-4" />
                               My Orders
@@ -232,7 +232,7 @@ export default function Navbar() {
                             <div className="my-1 h-px bg-neutral-200" />
                             <button
                               onClick={handleSignOut}
-                              className="flex w-full items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-all hover:bg-neutral-100 hover:text-midnight-ink"
+                              className="flex w-full items-center gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 text-sm text-neutral-600 transition-opacity hover:opacity-70"
                             >
                               <LogOut className="h-4 w-4" />
                               Log Out
@@ -244,7 +244,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       href="/auth/login"
-                      className="hidden md:inline-flex text-sm font-medium text-neutral-600 transition-colors hover:text-midnight-ink"
+                      className="hidden md:inline-flex text-sm font-medium text-neutral-600 transition-opacity hover:opacity-70"
                     >
                       Log In
                     </Link>
@@ -255,7 +255,7 @@ export default function Navbar() {
               {/* Currency Toggle */}
               <button
                 onClick={() => setCurrency(currency === "USD" ? "THB" : "USD")}
-                className="flex h-10 items-center gap-1 rounded-[var(--radius-md)] border border-neutral-200 px-2.5 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-midnight-ink"
+                className="flex h-10 items-center gap-1 rounded-[var(--radius-md)] border border-neutral-200 px-2.5 text-xs font-semibold text-neutral-600 transition-opacity hover:opacity-70"
                 title={`Switch to ${currency === "USD" ? "Thai Baht" : "US Dollar"}`}
                 aria-label={`Currency: ${currency}. Switch to ${currency === "USD" ? "Thai Baht" : "US Dollar"}`}
               >
@@ -350,7 +350,7 @@ export default function Navbar() {
                 <div>
                   <button
                     onClick={() => setMobileCatOpen(!mobileCatOpen)}
-                    className="flex w-full items-center justify-between font-heading text-2xl font-bold text-midnight-ink transition-colors hover:text-coral-punch"
+                    className="flex w-full items-center justify-between font-heading text-2xl font-bold text-midnight-ink transition-opacity hover:opacity-70"
                   >
                     Categories
                     <ChevronDown
@@ -375,7 +375,7 @@ export default function Navbar() {
                               key={cat.href}
                               href={cat.href}
                               onClick={() => setMobileOpen(false)}
-                              className="text-base font-medium text-neutral-600 transition-colors hover:text-coral-punch"
+                              className="text-base font-medium text-neutral-600 transition-opacity hover:opacity-70"
                             >
                               {cat.label}
                             </Link>
@@ -412,7 +412,7 @@ export default function Navbar() {
                         </MobileNavLink>
                         <button
                           onClick={handleSignOut}
-                          className="text-left font-heading text-2xl font-bold text-neutral-600 transition-colors hover:text-coral-punch"
+                          className="text-left font-heading text-2xl font-bold text-neutral-600 transition-opacity hover:opacity-70"
                         >
                           Log Out
                         </button>
@@ -428,7 +428,7 @@ export default function Navbar() {
                 <Link
                   href="/products"
                   onClick={() => setMobileOpen(false)}
-                  className="mt-2 flex h-12 items-center justify-center rounded-[var(--radius-md)] bg-coral-punch text-sm font-semibold text-white transition-all hover:shadow-[var(--shadow-md)]"
+                  className="mt-2 flex h-12 items-center justify-center rounded-[var(--radius-md)] bg-coral-punch text-sm font-semibold text-white transition-opacity hover:opacity-80 active:opacity-70"
                 >
                   Shop Now
                 </Link>
@@ -445,7 +445,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <Link
       href={href}
-      className="relative text-sm font-medium text-neutral-600 transition-colors hover:text-midnight-ink after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-electric-lime after:transition-all after:duration-300 hover:after:w-full"
+      className="text-sm font-medium text-neutral-600 transition-opacity hover:opacity-70"
     >
       {children}
     </Link>
@@ -465,7 +465,7 @@ function MobileNavLink({
     <Link
       href={href}
       onClick={onClick}
-      className="font-heading text-2xl font-bold text-midnight-ink transition-colors hover:text-coral-punch"
+      className="font-heading text-2xl font-bold text-midnight-ink transition-opacity hover:opacity-70"
     >
       {children}
     </Link>

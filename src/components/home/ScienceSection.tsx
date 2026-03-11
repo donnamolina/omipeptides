@@ -53,29 +53,9 @@ function SpringCounter({
     <span
       ref={ref}
       className="relative inline-block font-mono text-5xl font-bold text-white md:text-6xl"
-      style={{
-        textShadow: "0 0 40px rgba(197,245,54,0.3), 0 0 80px rgba(197,245,54,0.12)",
-      }}
     >
       0{suffix}
     </span>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Animated gradient line                                             */
-/* ------------------------------------------------------------------ */
-function PulseLine({ className }: { className?: string }) {
-  return (
-    <motion.div
-      className={`pointer-events-none absolute h-px ${className ?? ""}`}
-      style={{
-        background:
-          "linear-gradient(90deg, transparent 0%, rgba(197,245,54,0.25) 40%, rgba(197,245,54,0.5) 50%, rgba(197,245,54,0.25) 60%, transparent 100%)",
-      }}
-      animate={{ opacity: [0.3, 0.7, 0.3] }}
-      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-    />
   );
 }
 
@@ -108,31 +88,6 @@ export default function ScienceSection() {
           />
         ))}
       </div>
-
-      {/* ---------- Animated gradient lines ---------- */}
-      <PulseLine className="top-[18%] left-[5%] w-[35%]" />
-      <PulseLine className="top-[45%] right-[8%] w-[28%]" />
-      <PulseLine className="bottom-[22%] left-[12%] w-[40%]" />
-
-      {/* ---------- Vertical pulse accents ---------- */}
-      <motion.div
-        className="pointer-events-none absolute left-[20%] top-[10%] h-[30%] w-px"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent 0%, rgba(197,245,54,0.2) 50%, transparent 100%)",
-        }}
-        animate={{ opacity: [0.2, 0.5, 0.2] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      />
-      <motion.div
-        className="pointer-events-none absolute right-[15%] bottom-[10%] h-[25%] w-px"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent 0%, rgba(197,245,54,0.15) 50%, transparent 100%)",
-        }}
-        animate={{ opacity: [0.15, 0.45, 0.15] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
-      />
 
       {/* ---------- Content ---------- */}
       <div className="relative z-10 mx-auto max-w-7xl">

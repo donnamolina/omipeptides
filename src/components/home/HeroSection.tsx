@@ -47,7 +47,7 @@ export default function HeroSection() {
   const ctaDelay = 1.0;
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-x-clip bg-warm-cream px-4 sm:px-6 lg:px-8 pt-20 pb-24 -mt-8">
+    <section className="relative flex min-h-[calc(100vh-80px)] items-center justify-center overflow-x-clip bg-warm-cream px-4 sm:px-6 lg:px-8 pt-20 pb-12 -mt-8">
       {/* Animated gradient mesh background */}
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -160,33 +160,33 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Trust cards */}
-        <motion.div
-          className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4"
+        {/* Trust line */}
+        <motion.p
+          className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm font-medium text-neutral-600"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: ctaDelay + 0.4 }}
         >
-          <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-stone bg-surface-white p-3 shadow-[var(--shadow-sm)]">
-            <ShieldCheck className="h-5 w-5 shrink-0 text-coral-punch" />
-            <span className="text-sm font-medium text-midnight-ink">Third-Party Tested</span>
-          </div>
-          <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-stone bg-surface-white p-3 shadow-[var(--shadow-sm)]">
-            <FlaskConical className="h-5 w-5 shrink-0 text-coral-punch" />
-            <span className="text-sm font-medium text-midnight-ink">99.7% Purity</span>
-          </div>
-          <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-stone bg-surface-white p-3 shadow-[var(--shadow-sm)]">
-            <Gift className="h-5 w-5 shrink-0 text-coral-punch" />
-            <span className="text-sm font-medium text-midnight-ink">Free BAC Water $150+</span>
-          </div>
-          <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-stone bg-surface-white p-3 shadow-[var(--shadow-sm)]">
-            <QrCode className="h-5 w-5 shrink-0 text-coral-punch" />
-            <div className="min-w-0">
-              <span className="block text-sm font-medium text-midnight-ink">Janoshik Verified</span>
-              <span className="block text-xs text-neutral-400">Scan QR on every vial</span>
-            </div>
-          </div>
-        </motion.div>
+          <span className="inline-flex items-center gap-1.5">
+            <ShieldCheck className="h-4 w-4 text-coral-punch" />
+            Third-Party Tested
+          </span>
+          <span className="text-neutral-300">·</span>
+          <span className="inline-flex items-center gap-1.5">
+            <FlaskConical className="h-4 w-4 text-coral-punch" />
+            99.7% Purity
+          </span>
+          <span className="text-neutral-300">·</span>
+          <span className="inline-flex items-center gap-1.5">
+            <Gift className="h-4 w-4 text-coral-punch" />
+            Free BAC Water $150+
+          </span>
+          <span className="text-neutral-300">·</span>
+          <span className="inline-flex items-center gap-1.5">
+            <QrCode className="h-4 w-4 text-coral-punch" />
+            Janoshik Verified
+          </span>
+        </motion.p>
       </div>
 
     </section>

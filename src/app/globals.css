@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+::selection {
+  background: #FF5C39;
+  color: white;
+}
+
+::-moz-selection {
+  background: #FF5C39;
+  color: white;
+}
+
 :root {
   /* Brand Colors */
   --coral-punch: #FF5C39;

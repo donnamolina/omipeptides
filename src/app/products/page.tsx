@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo, useEffect, Suspense } from "react";
+import { useState, useMemo, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
-import { Search, FileCheck, Mail } from "lucide-react";
+import { Search, FileCheck, Mail, X, Check } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { createClient } from "@/lib/supabase/client";
@@ -103,11 +104,113 @@ function SkeletonGrid() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Notify Me Modal                                                   */
+/* ------------------------------------------------------------------ */
+function NotifyMeModal({
+  product,
+  onClose,
+}: {
+  product: Product;
+  onClose: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setSubmitting(true);
+    setError("");
+
+    const supabase = createClient();
+    const { error: insertError } = await supabase.from("waitlist").insert({
+      email: email.trim(),
+      product_id: product.id,
+      product_name: product.name,
+    });
+
+    setSubmitting(false);
+    if (insertError) {
+      setError("Something went wrong. Please try again.");
+    } else {
+      setSuccess(true);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-midnight-ink/40" onClick={onClose} />
+      <div className="relative w-full max-w-sm rounded-[var(--radius-lg)] bg-surface-white p-6 shadow-[var(--shadow-xl)]">
+        <button
+          onClick={onClose}
+          className="absolute right-3 top-3 text-neutral-400 hover:text-midnight-ink"
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        {success ? (
+          <div className="text-center py-4">
+            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-success/10">
+              <Check className="h-5 w-5 text-success" />
+            </div>
+            <p className="mt-3 font-heading text-lg font-bold text-midnight-ink">
+              You&apos;re on the list!
+            </p>
+            <p className="mt-1 text-sm text-neutral-600">
+              We&apos;ll notify you when {product.name} is available.
+            </p>
+          </div>
+        ) : (
+          <>
+            <p className="font-heading text-lg font-bold text-midnight-ink">
+              Get notified
+            </p>
+            <p className="mt-1 text-sm text-neutral-600">
+              Enter your email and we&apos;ll let you know when{" "}
+              <span className="font-medium">{product.name}</span> is back in stock.
+            </p>
+            <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+              <input
+                ref={inputRef}
+                type="email"
+                required
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-10 flex-1 rounded-[var(--radius-md)] border border-neutral-200 bg-white px-3 text-sm outline-none focus:border-midnight-ink transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={submitting}
+                className="h-10 rounded-[var(--radius-md)] bg-coral-punch px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+              >
+                {submitting ? "..." : "Notify Me"}
+              </button>
+            </form>
+            {error && <p className="mt-2 text-xs text-error">{error}</p>}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Product Card                                                      */
 /* ------------------------------------------------------------------ */
 function ProductCard({ product }: { product: Product }) {
   const addItem = useCartStore((s) => s.addItem);
   const currency = useCartStore((s) => s.currency);
+  const [added, setAdded] = useState(false);
+  const [showNotify, setShowNotify] = useState(false);
 
   const sortedVariants = useMemo(() => {
     if (!product.variants || product.variants.length === 0) return [];
@@ -133,93 +236,110 @@ function ProductCard({ product }: { product: Product }) {
       selectedVariant?.sizeLabel,
       selectedVariant?.price
     );
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
   }
 
   return (
-    <div className="relative flex flex-col bg-soft-sand rounded-[var(--radius-lg)] overflow-hidden h-full">
-      {/* COA badge */}
-      <div className="absolute top-3 right-3 z-10 flex items-center gap-1 text-xs text-ocean-teal bg-ocean-teal/10 rounded px-2 py-1">
-        <FileCheck className="h-3 w-3" />
-        COA
-      </div>
-
-      {/* Image area */}
-      <div className="relative h-48 bg-neutral-100">
-        {!product.inStock && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center bg-midnight-ink/50">
-            <span className="text-xs font-semibold uppercase tracking-wider text-white">
-              Out of Stock
-            </span>
-          </div>
-        )}
-        <Image
-          src={categoryImage(product.category)}
-          alt={product.name}
-          fill
-          className="object-cover"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
-      </div>
-
-      {/* Body */}
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <span className="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">
-          {product.category.replace(/-/g, " ")}
-        </span>
-        <h3 className="font-heading text-lg font-semibold text-midnight-ink">{product.name}</h3>
-        <p className="text-sm text-neutral-600 line-clamp-2">{product.shortDescription}</p>
-
-        {/* Meta row */}
-        <div className="flex items-center gap-4 text-xs text-neutral-400">
-          <span>Purity 99.7%</span>
-          {sortedVariants.length > 0 && (
-            <span>
-              Sizes {sortedVariants.length} option{sortedVariants.length !== 1 ? "s" : ""}
-            </span>
-          )}
+    <>
+      <div className="relative flex flex-col bg-soft-sand rounded-[var(--radius-lg)] overflow-hidden h-full">
+        {/* COA badge */}
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 text-xs text-ocean-teal bg-ocean-teal/10 rounded px-2 py-1">
+          <FileCheck className="h-3 w-3" />
+          COA
         </div>
 
-        {/* Variant selector */}
-        {sortedVariants.length > 0 && (
-          <select
-            value={selectedVariant?.id ?? ""}
-            onChange={handleVariantChange}
-            className="h-9 text-sm border border-neutral-200 rounded-[var(--radius-md)] bg-white px-2 w-full"
-          >
-            {sortedVariants.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.sizeLabel} &mdash; ${v.price.toFixed(2)}
-              </option>
-            ))}
-          </select>
-        )}
+        {/* Image area */}
+        <Link href={`/products/${product.slug}`} className="relative block h-48 bg-neutral-100">
+          {!product.inStock && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-midnight-ink/50">
+              <span className="text-xs font-semibold uppercase tracking-wider text-white">
+                Out of Stock
+              </span>
+            </div>
+          )}
+          <Image
+            src={categoryImage(product.category)}
+            alt={product.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        </Link>
 
-        {/* Spacer to push price + button to bottom */}
-        <div className="mt-auto" />
-
-        {/* Price + Add */}
-        <div className="flex items-center justify-between pt-2">
-          <span className="font-heading text-xl font-bold text-midnight-ink">
-            {formatPrice(displayPrice, currency)}
+        {/* Body */}
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <span className="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">
+            {product.category.replace(/-/g, " ")}
           </span>
-          {product.inStock ? (
-            <button
-              onClick={handleAdd}
-              className="bg-midnight-ink text-white rounded-[var(--radius-md)] h-9 px-4 text-sm font-medium transition-colors hover:opacity-90"
-            >
-              Add
-            </button>
-          ) : (
-            <button className="flex items-center gap-1.5 bg-transparent border border-neutral-300 text-neutral-600 rounded-[var(--radius-md)] h-9 px-4 text-sm font-medium transition-colors hover:bg-neutral-50">
-              <Mail className="h-3.5 w-3.5" />
-              Notify Me
-            </button>
-          )}
-        </div>
+          <Link href={`/products/${product.slug}`} className="hover:text-coral-punch transition-colors">
+            <h3 className="font-heading text-lg font-semibold text-midnight-ink">{product.name}</h3>
+          </Link>
+          <p className="text-sm text-neutral-600 line-clamp-2">{product.shortDescription}</p>
 
-        <p className="text-[10px] text-neutral-400 italic">For research use only</p>
+          {/* Meta row */}
+          <div className="flex items-center gap-4 text-xs text-neutral-400">
+            <span>Purity {product.purity}</span>
+            {sortedVariants.length > 0 && (
+              <span>
+                Sizes {sortedVariants.length} option{sortedVariants.length !== 1 ? "s" : ""}
+              </span>
+            )}
+          </div>
+
+          {/* Variant selector */}
+          {sortedVariants.length > 0 && (
+            <select
+              value={selectedVariant?.id ?? ""}
+              onChange={handleVariantChange}
+              className="h-9 text-sm border border-neutral-200 rounded-[var(--radius-md)] bg-white px-2 w-full"
+            >
+              {sortedVariants.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.sizeLabel} — {formatPrice(v.price, currency)}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Spacer to push price + button to bottom */}
+          <div className="mt-auto" />
+
+          {/* Price + Add */}
+          <div className="flex items-center justify-between pt-2">
+            <span className="font-heading text-xl font-bold text-midnight-ink">
+              {formatPrice(displayPrice, currency)}
+            </span>
+            {product.inStock ? (
+              <button
+                onClick={handleAdd}
+                className={`rounded-[var(--radius-md)] h-9 px-4 text-sm font-medium transition-colors ${
+                  added
+                    ? "bg-success text-white"
+                    : "bg-midnight-ink text-white hover:opacity-90"
+                }`}
+              >
+                {added ? "Added!" : "+ Add"}
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowNotify(true)}
+                className="flex items-center gap-1.5 bg-transparent border border-neutral-300 text-neutral-600 rounded-[var(--radius-md)] h-9 px-4 text-sm font-medium transition-colors hover:bg-neutral-50"
+              >
+                <Mail className="h-3.5 w-3.5" />
+                Notify Me
+              </button>
+            )}
+          </div>
+
+          <p className="text-[10px] text-neutral-400 italic">For research use only</p>
+        </div>
       </div>
-    </div>
+
+      {showNotify && (
+        <NotifyMeModal product={product} onClose={() => setShowNotify(false)} />
+      )}
+    </>
   );
 }
 
