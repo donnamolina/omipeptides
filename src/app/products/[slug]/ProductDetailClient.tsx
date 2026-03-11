@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, ChevronDown, ShoppingBag, Shield, FlaskConical, Check, AlertTriangle, FileText } from "lucide-react";
+import { ChevronRight, ChevronDown, ShoppingBag, Shield, FlaskConical, Check, AlertTriangle, FileText, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion, AnimatePresence } from "framer-motion";
@@ -475,22 +475,90 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
         </section>
 
         {/* Certificate of Analysis */}
-        <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
-          <div className="rounded-[var(--radius-lg)] border border-neutral-200 bg-surface-white p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-ocean-teal/10">
-                <FileText className="h-5 w-5 text-ocean-teal" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-midnight-ink">Certificate of Analysis</p>
-                <p className="text-xs text-neutral-400">COA documentation available upon request.</p>
-                <p className="text-xs text-neutral-400">
-                  Contact: <span className="text-ocean-teal">research@omipeptides.com</span>
-                </p>
-              </div>
+        {product.category !== "accessories-supplies" && (
+          <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
+            <div className="mb-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-warm-gray">
+                Independently Verified
+              </p>
+              <h2 className="mt-2 font-heading text-2xl font-bold text-midnight-ink">
+                Certificate of Analysis
+              </h2>
             </div>
-          </div>
-        </section>
+
+            <div className="rounded-[var(--radius-lg)] border border-stone bg-surface-white p-6 md:p-8">
+              {/* Lab header */}
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-midnight-ink">
+                    <FlaskConical className="h-4 w-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-midnight-ink">Janoshik Analytical</p>
+                    <p className="text-sm text-warm-gray">Independent Third-Party Testing</p>
+                  </div>
+                </div>
+                <a
+                  href="https://janoshik.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-ocean-teal transition-opacity hover:opacity-70"
+                >
+                  janoshik.com
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              </div>
+
+              {/* Stat boxes */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-8">
+                <div className="rounded-[var(--radius-md)] bg-soft-sand p-4 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-warm-gray">Purity Result</p>
+                  <p className="mt-1 font-heading text-xl font-semibold text-midnight-ink">≥99.7%</p>
+                  <p className="mt-0.5 text-xs text-warm-gray">HPLC Verified</p>
+                </div>
+                <div className="rounded-[var(--radius-md)] bg-soft-sand p-4 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-warm-gray">Analysis Methods</p>
+                  <p className="mt-1 font-heading text-xl font-semibold text-midnight-ink">HPLC</p>
+                  <p className="mt-0.5 text-xs text-warm-gray">& Mass Spectrometry</p>
+                </div>
+                <div className="rounded-[var(--radius-md)] bg-soft-sand p-4 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-warm-gray">QR on Every Vial</p>
+                  <p className="mt-1 font-heading text-xl font-semibold text-midnight-ink">Scan</p>
+                  <p className="mt-0.5 text-xs text-warm-gray">Verify on Janoshik</p>
+                </div>
+              </div>
+
+              {/* How to verify */}
+              <div className="mb-6">
+                <p className="text-xs font-semibold uppercase tracking-wider text-warm-gray mb-4">
+                  How to Verify Your Product
+                </p>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <div className="flex items-start gap-3">
+                    <span className="font-heading text-lg font-bold text-coral-punch">01</span>
+                    <p className="text-sm text-neutral-600">Find the QR code on your vial label</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="font-heading text-lg font-bold text-coral-punch">02</span>
+                    <p className="text-sm text-neutral-600">Scan with your phone camera</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="font-heading text-lg font-bold text-coral-punch">03</span>
+                    <p className="text-sm text-neutral-600">View full COA results on Janoshik</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-stone mb-4" />
+
+              {/* Disclaimer */}
+              <p className="text-sm text-neutral-600">
+                Every batch of <span className="font-semibold text-midnight-ink">{product.name}</span> is independently tested by Janoshik Analytical (Czech Republic). Certificates of Analysis are included with your order and can be verified online via the QR code on each vial.
+              </p>
+            </div>
+          </section>
+        )}
 
         {/* Related Products — Horizontal scroll with snap */}
         {relatedProducts.length > 0 && (
