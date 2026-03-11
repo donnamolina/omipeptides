@@ -183,7 +183,7 @@ export default function Navbar() {
             </div>
 
             {/* Right Side */}
-            <div className="flex items-center gap-3">
+            <div className="ml-auto flex items-center gap-3">
               {/* Shop Now CTA */}
               <Link
                 href="/products"
@@ -267,8 +267,8 @@ export default function Navbar() {
                 className="flex md:hidden h-10 rounded-[var(--radius-md)] border border-neutral-200 bg-transparent px-2 text-xs font-semibold text-neutral-600 outline-none"
                 aria-label="Select currency"
               >
-                <option value="USD">USD</option>
-                <option value="DOP">DOP</option>
+                <option value="USD">$</option>
+                <option value="DOP">RD$</option>
               </select>
               <button
                 onClick={() => setCurrency(currency === "USD" ? "DOP" : "USD")}
