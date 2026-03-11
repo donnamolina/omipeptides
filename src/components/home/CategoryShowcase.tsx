@@ -57,29 +57,28 @@ function CategoryCard({
   return (
     <MotionLink
       href={`/products?category=${category.slug}`}
-      className="group relative block rounded-[var(--radius-lg)] p-8 pb-12"
+      className="group relative block rounded-[var(--radius-lg)] border border-stone bg-soft-sand p-8 pb-12"
       style={{
-        background: `linear-gradient(135deg, ${category.color}18, ${category.color}0a)`,
         minHeight: "240px",
       }}
       initial={false}
       whileHover={{
         y: -8,
-        boxShadow: `0 0 40px rgba(197,245,54,0.25), 0 0 80px ${category.color}15`,
+        boxShadow: "0 0 40px rgba(197,245,54,0.25), 0 8px 24px rgba(45,38,32,0.10)",
         transition: { duration: 0.35, ease: "easeOut" },
       }}
     >
-      {/* Animated gradient border — rotates on hover via @property --border-angle */}
+      {/* Animated gradient border — rotates on hover */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-[var(--radius-lg)] opacity-40 transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 rounded-[var(--radius-lg)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
           padding: "1px",
           background: `linear-gradient(
             var(--border-angle, 0deg),
-            ${category.color}60,
+            rgba(197,245,54,0.6),
             transparent 40%,
             transparent 60%,
-            ${category.color}60
+            rgba(197,245,54,0.6)
           )`,
           mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           maskComposite: "exclude",
@@ -89,26 +88,6 @@ function CategoryCard({
           animation: "border-rotate 3s linear infinite",
         }}
       />
-
-      {/* Static border (visible by default, fades out on hover as animated border takes over) */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-[var(--radius-lg)] transition-opacity duration-500 group-hover:opacity-0"
-        style={{
-          border: `1px solid ${category.color}25`,
-        }}
-      />
-
-      {/* Category color dot with pulse on hover */}
-      <span className="absolute top-6 right-6 flex h-3 w-3">
-        <span
-          className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-75"
-          style={{ background: category.color }}
-        />
-        <span
-          className="relative inline-flex h-3 w-3 rounded-full"
-          style={{ background: category.color }}
-        />
-      </span>
 
       {/* Spacer to push content down */}
       <div className="h-24 md:h-32" />

@@ -14,7 +14,7 @@ const blogImages = [
 
 export default function BlogPreview({ posts: blogPosts }: { posts: BlogPost[] }) {
   return (
-    <section className="bg-neutral-100 py-24 lg:py-32 px-6 lg:px-8">
+    <section className="py-24 lg:py-32 px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <ScrollReveal>
           <div className="flex items-end justify-between">

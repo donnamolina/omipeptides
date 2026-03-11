@@ -90,14 +90,14 @@ export default function ScienceSection() {
         {Array.from({ length: 20 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute h-1 w-1 rounded-full bg-white/10"
+            className="absolute h-1 w-1 rounded-full bg-white/[0.05]"
             style={{
               top: `${(i * 37 + 13) % 100}%`,
               left: `${(i * 53 + 7) % 100}%`,
             }}
             animate={{
               y: [0, -12, 0, 10, 0],
-              opacity: [0.15, 0.35, 0.15],
+              opacity: [0.05, 0.15, 0.05],
             }}
             transition={{
               duration: 6 + (i * 17) % 8,
@@ -141,12 +141,12 @@ export default function ScienceSection() {
           <h2 className="font-heading text-center text-4xl font-bold tracking-tight text-white md:text-5xl">
             BACKED BY RESEARCH,
             <br />
-            <span className="text-electric-lime">NOT HYPE</span>
+            <span className="text-coral-punch">NOT HYPE</span>
           </h2>
         </ScrollReveal>
 
         {/* Stats grid */}
-        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
+        <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-3 lg:mt-24">
           {stats.map((stat, i) => (
             <ScrollReveal key={stat.label} delay={i * 0.15}>
               <div className="group text-center">

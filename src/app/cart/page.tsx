@@ -153,7 +153,7 @@ export default function CartPage() {
                   </div>
                   {shipping > 0 && (
                     <p className="text-xs text-neutral-400">
-                      Free shipping on orders over {formatPrice(150, currency)}
+                      Free BAC water on orders over {formatPrice(150, currency)}
                     </p>
                   )}
                   <div className="border-t border-neutral-200 pt-3">

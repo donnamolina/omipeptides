@@ -8,7 +8,7 @@ export default function FeaturedProducts({ products }: { products: Product[] }) 
   const featured = products;
 
   return (
-    <section className="bg-neutral-100 py-24 lg:py-32 px-6 lg:px-8">
+    <section className="bg-soft-sand py-24 lg:py-32 px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <ScrollReveal>
           <h2 className="font-heading text-center text-4xl font-bold tracking-tight text-midnight-ink md:text-5xl">

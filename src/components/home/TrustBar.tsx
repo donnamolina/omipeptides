@@ -21,7 +21,7 @@ const trustItems = [
 
 export default function TrustBar() {
   return (
-    <section className="border-y border-neutral-200 bg-neutral-100 py-8">
+    <section className="border-y border-stone bg-soft-sand py-8">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center gap-6">

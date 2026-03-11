@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { Shield, FlaskConical, Truck } from "lucide-react";
 
 const rotatingWords = [
   { text: "UPGRADE", color: "#C5F536" },
@@ -152,12 +153,35 @@ export default function HeroSection() {
           >
             <Link
               href="/blog"
-              className="inline-flex h-13 items-center justify-center rounded-[var(--radius-md)] border-2 border-midnight-ink px-8 text-sm font-semibold text-midnight-ink transition-all hover:bg-midnight-ink hover:text-white active:scale-[0.98]"
+              className="inline-flex h-13 items-center justify-center rounded-[var(--radius-md)] border-2 border-coral-punch px-8 text-sm font-semibold text-coral-punch transition-all hover:bg-coral-punch hover:text-white active:scale-[0.98]"
             >
               Learn the Science
             </Link>
           </motion.div>
         </div>
+
+        {/* Trust signals */}
+        <motion.div
+          className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: ctaDelay + 0.4 }}
+        >
+          <span className="flex items-center gap-1.5 text-sm font-medium text-neutral-600">
+            <Shield className="h-4 w-4 text-ocean-teal" />
+            Third-Party Tested
+          </span>
+          <span className="hidden sm:inline text-neutral-300">·</span>
+          <span className="flex items-center gap-1.5 text-sm font-medium text-neutral-600">
+            <FlaskConical className="h-4 w-4 text-ocean-teal" />
+            99.7% Purity
+          </span>
+          <span className="hidden sm:inline text-neutral-300">·</span>
+          <span className="flex items-center gap-1.5 text-sm font-medium text-neutral-600">
+            <Truck className="h-4 w-4 text-ocean-teal" />
+            Free BAC Water on Orders $150+
+          </span>
+        </motion.div>
       </div>
 
     </section>
